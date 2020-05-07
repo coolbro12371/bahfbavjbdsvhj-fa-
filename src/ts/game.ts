@@ -6,7 +6,6 @@ import '../css/style.css'; // loading css
 
 import 'phaser'; // loading Phaser with dependencies
 
-import _forEach from 'lodash-es/forEach';
 import * as logger from 'js-logger';
 
 import * as gameConfig from './game.config';
@@ -40,6 +39,7 @@ const config: Phaser.Types.Core.GameConfig = {
  * @type {Phaser.Game}
  */
 let game: Phaser.Game;
+
 if (gameConfig.stats && process.env.NODE_ENV !== 'production') {
   game = new PhaserStatsGame(config);
 } else {
@@ -49,12 +49,14 @@ if (gameConfig.stats && process.env.NODE_ENV !== 'production') {
 /**
  * Registering game scenes
  */
-_forEach({
+const initialScenes = {
   boot: Boot,
   preloader: Preloader,
   game: Game
-}, function(scene, key) {
-  game.scene.add(key, scene);
+};
+
+Object.entries(initialScenes).forEach((entry: any[]) => {
+  game.scene.add(entry[0], entry[1]);
 });
 
 game.scene.start('boot');

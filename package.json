@@ -23,7 +23,6 @@
   "homepage": "https://github.com/mbarsil/adventure-capitalist#readme",
   "dependencies": {
     "js-logger": "^1.6.0",
-    "lodash-es": "^4.17.15",
     "phaser": "^3.19.0",
     "stats.js": "^0.17.0"
   },
