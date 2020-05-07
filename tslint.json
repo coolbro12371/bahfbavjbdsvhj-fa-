@@ -186,7 +186,6 @@
     "no-reference-import": true,
     "no-unsafe-finally": true,
     "no-use-before-declare": false, // disabled because it is very heavy performance-wise and not that useful
-    "no-var-requires": true,
     "no-var-keyword": true,
     "object-literal-key-quotes": { "options": "consistent-as-needed" },
     "object-literal-sort-keys": false,

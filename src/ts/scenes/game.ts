@@ -7,20 +7,19 @@ import * as logger from 'js-logger';
  */
 export default class Game extends Phaser.Scene {
 
-    create (): void
-    {
-        logger.info('Game enter');
+  create(): void {
+    logger.info('Game enter');
 
-        this.add.image(
-        <number>this.sys.game.config.width/2,
-        <number>this.sys.game.config.height/2,
-        'bg'
-        );
+    this.add.image(
+      (this.sys.game.config.width as number) / 2,
+      (this.sys.game.config.height as number) / 2,
+      'bg'
+    );
 
-        this.add.sprite(
-        <number>this.sys.game.config.width/2,
-        <number>this.sys.game.config.height/2,
-        'logo'
-        );
-    }
+    this.add.sprite(
+      (this.sys.game.config.width as number) / 2 ,
+      (this.sys.game.config.height as number) / 2,
+      'logo'
+    );
+  }
 }

@@ -31,22 +31,22 @@ export const logLevel = process.env.NODE_ENV !== 'production' ? logger.DEBUG : l
  * @type {{x: number; y: number}}
  */
 export const size: {
-    readonly x: number;
-    readonly y: number;
+  readonly x: number;
+  readonly y: number;
 } = {
-    x: 1070,
-    y: 600
+  x: 1070,
+  y: 600
 };
 /**
  * Game orientation
  * @type {{forceLandscape: boolean; forcePortrait: boolean}}
  */
 export const orientation: {
-    readonly forceLandscape: boolean;
-    readonly forcePortrait: boolean;
+  readonly forceLandscape: boolean;
+  readonly forcePortrait: boolean;
 } = {
-    forceLandscape: false,
-    forcePortrait: false
+  forceLandscape: false,
+  forcePortrait: false
 };
 /**
  * Google analytics ID

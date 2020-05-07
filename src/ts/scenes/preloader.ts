@@ -8,21 +8,19 @@ import * as logger from 'js-logger';
  */
 export default class Preloader extends Phaser.Scene {
 
-    preload (): void
-    {
-        logger.info('Preloader enter');
+  preload(): void {
+    logger.info('Preloader enter');
 
-        // TODO preload assets
+    // TODO preload assets
 
-        this.load.image('bg', require('../../assets/images/bg.jpg'));
-        this.load.image('logo', require('../../assets/images/logo.png'));
-    }
+    this.load.image('bg', require('../../assets/images/bg.jpg'));
+    this.load.image('logo', require('../../assets/images/logo.png'));
+  }
 
-    create (): void
-    {
-        logger.info('Preloader leave');
+  create(): void {
+    logger.info('Preloader leave');
 
-        this.scene.start('game');
-    }
+    this.scene.start('game');
+  }
 
 }

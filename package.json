@@ -7,8 +7,8 @@
     "start": "webpack-dev-server --open --port 3017",
     "build:dev": "webpack",
     "build:prod": "webpack --config webpack.config.prod.ts",
-    "lint": "tslint **/*.ts",
-    "tslint:fix": "tslint --fix **/*.ts"
+    "lint": "tslint src/**/*/*.ts",
+    "tslint:fix": "tslint --fix src/**/*/*.ts"
   },
   "husky": {
     "hooks": {
