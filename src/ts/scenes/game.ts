@@ -49,7 +49,7 @@ export default class Game extends Phaser.Scene {
         y: 50 + (i * 100)
       };
 
-      const buttonSize = { x: 150, y: 60}
+      const buttonSize = { x: 150, y: 60 };
 
       this.graphics.fillStyle(0x7ab7c5, 0.9);
       this.graphics.fillRoundedRect(position.x, position.y, buttonSize.x, buttonSize.y);
