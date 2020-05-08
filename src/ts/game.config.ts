@@ -4,7 +4,7 @@ import * as logger from 'js-logger';
  * Game title used for page title tag.
  * @type {string}
  */
-export const title = 'Phaser TypeScript Boilerplate';
+export const title = 'Adventure Capitalist';
 /**
  * Game description used for html page metadata.
  * @type {string}
@@ -34,9 +34,16 @@ export const size: {
   readonly x: number;
   readonly y: number;
 } = {
-  x: 1070,
-  y: 600
+  x: 1300,
+  y: 800
 };
+
+/**
+ * Game bg color
+ * @type string
+ */
+export const canvasColor = '#ffffff';
+
 /**
  * Game orientation
  * @type {{forceLandscape: boolean; forcePortrait: boolean}}
