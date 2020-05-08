@@ -1,33 +1,51 @@
-export class BaseBusiness {
-  protected running: boolean = false;
-  protected startedAt: number;
-  protected endingAt: number;
+import { BUSINESSES_GUI } from '../config/gui.config';
+import { BUSINESS_INFO } from '../config/business.config';
 
-  protected asset: any;
-  protected price: any;
-  protected profit: any;
-  protected interval: any;
-  protected game: any;
-  protected index: any;
+export class BaseBusiness {
+  protected price: number;
+  protected profit: number;
+  protected interval: number;
+  protected _logo: string;
+  protected businessValueFactor: number;
+
+  protected _positionX: number;
+  protected _positionY: number;
+
+  get positionX(): number {
+    return this._positionX;
+  }
+
+  get positionY(): number {
+    return this._positionY;
+  }
+
+  get logo(): string {
+    return this._logo;
+  }
 
   constructor(
     price: number,
     profit: number,
-    interval: number
+    interval: number,
+    logo: string,
+    businessValueFactor: number
   ) {
-    console.log(price, profit, interval);
+    this.price = price;
+    this.profit = profit;
+    this.interval = interval;
+    this._logo = logo;
+    this.businessValueFactor = businessValueFactor;
+    this.calculateUIPosition();
   }
 
-  // protected indicators: {
-  //   name: Phaser.,
-  //   profit: Phaser.Text,
-  //   interval: Phaser.Text,
-  //   level: Phaser.Text,
-  //   price: Phaser.Text,
-  //   alert: Phaser.Text,
-  //   alertBg: Phaser.Image,
-  //   progressBg: Phaser.Image,
-  //   progress: Phaser.Line
-  // };
+  private calculateUIPosition(): void {
+    const businessColumnSize = BUSINESS_INFO.length / 2;
+    this._positionX = this.businessValueFactor < businessColumnSize ?
+      BUSINESSES_GUI.leftSideBusinessX :
+      BUSINESSES_GUI.rightSideBusinessX;
 
+    this._positionY = this.businessValueFactor < businessColumnSize ?
+      (this.businessValueFactor) * BUSINESSES_GUI.businessesGap + BUSINESSES_GUI.firstRowBusinessY :
+      (this.businessValueFactor % businessColumnSize ) * BUSINESSES_GUI.businessesGap + BUSINESSES_GUI.firstRowBusinessY;
+  }
 }

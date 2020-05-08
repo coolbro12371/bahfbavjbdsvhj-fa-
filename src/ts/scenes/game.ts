@@ -1,7 +1,7 @@
 import * as logger from 'js-logger';
 
 import { canvasColor } from '../config/game.config';
-import { SIDEMENU } from '../config/gui.config';
+import { BUSINESSES_GUI, SIDEMENU_GUI } from '../config/gui.config';
 import { BUSINESS_INFO } from '../config/business.config';
 
 import { BaseBusiness } from '../classes/BaseBusiness';
@@ -25,7 +25,7 @@ const {
   menuY,
   menuHeight,
   menuWidth,
-} = SIDEMENU;
+} = SIDEMENU_GUI;
 
 export default class Game extends Phaser.Scene {
   private background: Phaser.GameObjects.Image;
@@ -44,7 +44,7 @@ export default class Game extends Phaser.Scene {
     this.setBackground();
     this.setSideMenu();
     this.createBusinesses();
-    this.setBusinessElements();
+    this.createBusinessesUI();
   }
 
   setBackground(): void {
@@ -90,16 +90,27 @@ export default class Game extends Phaser.Scene {
   }
 
   createBusinesses(): void {
-    for (const Business of BUSINESS_INFO) {
-      // @ts-ignore
-      this.businesses.push(new Business.model(
-        Business.price,
-        Business.profit,
-        Business.interval
+    BUSINESS_INFO.forEach((business, index: number) => {
+      this.businesses.push(new business.model(
+        business.price,
+        business.profit,
+        business.interval,
+        business.logo,
+        index
       ));
-    }
+    });
   }
 
-  setBusinessElements(): void {
+  createBusinessesUI(): void {
+    this.businesses.forEach((business: BaseBusiness) => {
+      const businessLogo = this.add.image(
+        business.positionX,
+        business.positionY,
+        business.logo
+      );
+
+      businessLogo.displayHeight = BUSINESSES_GUI.logoSize;
+      businessLogo.scaleX = businessLogo.scaleY;
+    });
   }
 }

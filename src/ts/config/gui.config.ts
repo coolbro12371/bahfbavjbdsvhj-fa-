@@ -1,6 +1,6 @@
 import { size } from './game.config';
 
-export const SIDEMENU = {
+export const SIDEMENU_GUI = {
   buttonWidth: 150,
   buttonHeight: 60,
   buttonOffsetX: 10,
@@ -21,10 +21,12 @@ export const SIDEMENU = {
   menuWidth: 200,
 };
 
-export const BUSINESSES = {
-  businessesGap: 100,
-  leftSideBusinessX: 180,
-  rightSideBusinessY: 530,
+export const BUSINESSES_GUI = {
+  businessesGap: 200,
+  leftSideBusinessX: 300,
+  rightSideBusinessX: 830,
+  firstRowBusinessY: 80,
   businessFont: '14px Arial',
-  businessFontFill: '0xccc'
+  businessFontFill: '0xccc',
+  logoSize: 64
 };
