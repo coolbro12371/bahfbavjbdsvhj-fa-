@@ -1,7 +1,10 @@
 import * as logger from 'js-logger';
 
-import { canvasColor, size } from '../game.config';
-import { SIDEMENU } from '../gui.config';
+import { canvasColor } from '../config/game.config';
+import { SIDEMENU } from '../config/gui.config';
+import { BUSINESS_INFO } from '../config/business.config';
+
+import { BaseBusiness } from '../classes/BaseBusiness';
 
 const {
   buttonWidth,
@@ -28,6 +31,7 @@ export default class Game extends Phaser.Scene {
   private background: Phaser.GameObjects.Image;
   private graphics: Phaser.GameObjects.Graphics;
 
+  private businesses: BaseBusiness[] = [];
   private menuOptions: string[] = [
     'Managers',
     'Upgrades',
@@ -39,6 +43,7 @@ export default class Game extends Phaser.Scene {
 
     this.setBackground();
     this.setSideMenu();
+    this.createBusinesses();
     this.setBusinessElements();
   }
 
@@ -82,6 +87,17 @@ export default class Game extends Phaser.Scene {
 
       text.setOrigin(buttonOriginX, buttonOriginY);
     });
+  }
+
+  createBusinesses(): void {
+    for (const Business of BUSINESS_INFO) {
+      // @ts-ignore
+      this.businesses.push(new Business.model(
+        Business.price,
+        Business.profit,
+        Business.interval
+      ));
+    }
   }
 
   setBusinessElements(): void {

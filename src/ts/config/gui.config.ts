@@ -20,3 +20,11 @@ export const SIDEMENU = {
   menuHeight: size.y,
   menuWidth: 200,
 };
+
+export const BUSINESSES = {
+  businessesGap: 100,
+  leftSideBusinessX: 180,
+  rightSideBusinessY: 530,
+  businessFont: '14px Arial',
+  businessFontFill: '0xccc'
+};

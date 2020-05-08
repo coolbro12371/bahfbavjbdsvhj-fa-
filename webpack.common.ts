@@ -6,7 +6,7 @@ import * as HtmlWebpackPlugin from 'html-webpack-plugin';
 const HtmlWebpackBannerPlugin = require('html-webpack-banner-plugin');
 import * as MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
-import * as gameConfig from './src/ts/game.config';
+import * as gameConfig from './src/ts/config/game.config';
 
 // boolean indicating if current build is dev or prod
 const prod: boolean = module.parent.id.includes('.prod');

@@ -8,7 +8,7 @@ import 'phaser'; // loading Phaser with dependencies
 
 import * as logger from 'js-logger';
 
-import * as gameConfig from './game.config';
+import * as gameConfig from './config/game.config';
 
 import PhaserStatsGame from './classes/PhaserStatsGame';
 

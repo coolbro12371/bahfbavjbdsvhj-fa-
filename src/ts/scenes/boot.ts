@@ -1,5 +1,5 @@
 import * as logger from 'js-logger';
-import * as gameConfig from '../game.config';
+import * as gameConfig from '../config/game.config';
 
 /**
  * Boot Phaser game scene.
