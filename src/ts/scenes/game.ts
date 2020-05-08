@@ -1,12 +1,29 @@
 import * as logger from 'js-logger';
 
 import { canvasColor, size } from '../game.config';
+import { SIDEMENU } from '../gui.config';
 
-/**
- * Game Phaser scene.
- *
- * This is where all the logic for your game goes.
- */
+const {
+  buttonWidth,
+  buttonHeight,
+  buttonOffsetX,
+  buttonOffsetY,
+  buttonGap,
+  buttonColor,
+  buttonAlpha,
+  buttonOriginX,
+  buttonOriginY,
+  buttonFont,
+  buttonFontFill,
+  borderWidth,
+  menuBgColor,
+  menuBgAlpha,
+  menuX,
+  menuY,
+  menuHeight,
+  menuWidth,
+} = SIDEMENU;
+
 export default class Game extends Phaser.Scene {
   private background: Phaser.GameObjects.Image;
   private graphics: Phaser.GameObjects.Graphics;
@@ -39,32 +56,31 @@ export default class Game extends Phaser.Scene {
 
   setSideMenu(): void {
     this.graphics = this.add.graphics();
-    this.graphics.lineStyle(1, 0xe7f1f7, 0.5);
-    this.graphics.fillStyle(0xe7f1f7, 0.5);
-    this.graphics.fillRect(0, 0, 200, size.y);
+
+    this.graphics.lineStyle(borderWidth, menuBgColor, menuBgAlpha);
+    this.graphics.fillStyle(menuBgColor, menuBgAlpha);
+    this.graphics.fillRect(menuX, menuY, menuWidth, menuHeight);
 
     this.menuOptions.forEach((option, i) => {
       const position = {
-        x: 10,
-        y: 50 + (i * 100)
+        x: buttonOffsetX,
+        y: buttonOffsetY + (i * buttonGap)
       };
 
-      const buttonSize = { x: 150, y: 60 };
-
-      this.graphics.fillStyle(0x7ab7c5, 0.9);
-      this.graphics.fillRoundedRect(position.x, position.y, buttonSize.x, buttonSize.y);
+      this.graphics.fillStyle(buttonColor, buttonAlpha);
+      this.graphics.fillRoundedRect(position.x, position.y, buttonWidth, buttonHeight);
 
       const text = this.add.text(
-        position.x + (buttonSize.x / 2),
-        position.y + (buttonSize.y / 2),
+        position.x + (buttonWidth / 2),
+        position.y + (buttonHeight / 2),
         option,
         {
-          font: 'bold 20px Arial',
-          fill: '#000'
+          font: buttonFont,
+          fill: buttonFontFill
         }
       );
 
-      text.setOrigin(0.5, 0.5);
+      text.setOrigin(buttonOriginX, buttonOriginY);
     });
   }
 
