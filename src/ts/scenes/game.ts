@@ -43,6 +43,7 @@ export default class Game extends Phaser.Scene {
 
     this.setBackground();
     this.setSideMenu();
+    this.createMoneyIndicator();
     this.createBusinesses();
     this.createBusinessLogos();
     this.createBusinessStats();
@@ -90,6 +91,15 @@ export default class Game extends Phaser.Scene {
     });
   }
 
+  private createMoneyIndicator(): void {
+    this.add.text(
+      BUSINESSES_GUI.moneyIndicatorX,
+      BUSINESSES_GUI.moneyIndicatorY,
+      BUSINESSES_GUI.moneyIndicatorTitle,
+      BUSINESSES_GUI.moneyIndicatorFont
+    );
+  }
+
   private createBusinesses(): void {
     BUSINESS_INFO.forEach((business, index: number) => {
       this.businesses.push(new business.model(
@@ -111,6 +121,9 @@ export default class Game extends Phaser.Scene {
         business.logo
       );
 
+      businessLogo.setInteractive();
+      businessLogo.on('pointerup', () => business.onClick());
+
       businessLogo.displayHeight = BUSINESSES_GUI.logoSize;
       businessLogo.scaleX = businessLogo.scaleY;
     });
@@ -126,33 +139,21 @@ export default class Game extends Phaser.Scene {
           BUSINESSES_GUI.businessFont
         ),
         profit: this.add.text(
-          business.positionX + 75,
+          business.positionX + BUSINESSES_GUI.statsOffsetX,
           business.positionY,
-          null,
+          `Profit: ${business.profit}`,
           BUSINESSES_GUI.businessFont
         ),
         interval: this.add.text(
-          business.positionX + 75,
-          business.positionY + 15,
-          null,
-          BUSINESSES_GUI.businessFont
-        ),
-        level: this.add.text(
-          business.positionX + 75,
-          business.positionY + 30,
-          null,
+          business.positionX + BUSINESSES_GUI.statsOffsetX,
+          business.positionY + BUSINESSES_GUI.statsOffsetY,
+          `Remaining: ${business.interval}`,
           BUSINESSES_GUI.businessFont
         ),
         price: this.add.text(
-          business.positionX + 75,
-          business.positionY + 45,
-          null,
-          BUSINESSES_GUI.businessFont
-        ),
-        alert: this.add.text(
-          business.positionX + 5,
-          business.positionY + 45,
-          null,
+          business.positionX + BUSINESSES_GUI.statsOffsetX,
+          business.positionY + (2 * BUSINESSES_GUI.statsOffsetY),
+          `Price: ${ business.price.toString()}`,
           BUSINESSES_GUI.businessFont
         ),
         progress: new Phaser.GameObjects.Line(this, 0, 0, 0)

@@ -5,9 +5,7 @@ interface GraphicStats {
   name: Phaser.GameObjects.Text;
   profit: Phaser.GameObjects.Text;
   interval: Phaser.GameObjects.Text;
-  level: Phaser.GameObjects.Text;
   price: Phaser.GameObjects.Text;
-  alert: Phaser.GameObjects.Text;
   progress: Phaser.GameObjects.Line;
 }
 
@@ -17,10 +15,10 @@ export class BaseBusiness {
   protected _positionY: number;
   protected _graphicStats: GraphicStats;
   protected _name: string;
+  protected _price: number;
+  protected _profit: number;
+  protected _interval: number;
 
-  protected price: number;
-  protected profit: number;
-  protected interval: number;
   protected businessValueFactor: number;
 
   get positionX(): number {
@@ -39,6 +37,18 @@ export class BaseBusiness {
     return this._name;
   }
 
+  get price(): number {
+    return this._price;
+  }
+
+  get profit(): number {
+    return this._profit;
+  }
+
+  get interval(): number {
+    return this._interval;
+  }
+
   set graphicStats(stats: GraphicStats) {
     this._graphicStats = stats;
   }
@@ -53,11 +63,15 @@ export class BaseBusiness {
   ) {
     this._name = name;
     this._logo = logo;
-    this.price = price;
-    this.profit = profit;
-    this.interval = interval;
+    this._price = price;
+    this._profit = profit;
+    this._interval = interval;
     this.businessValueFactor = businessValueFactor;
     this.calculateUIPosition();
+  }
+
+  onClick(): void {
+    console.log('clicked');
   }
 
   private calculateUIPosition(): void {
