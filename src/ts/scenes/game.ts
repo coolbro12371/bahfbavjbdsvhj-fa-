@@ -44,10 +44,11 @@ export default class Game extends Phaser.Scene {
     this.setBackground();
     this.setSideMenu();
     this.createBusinesses();
-    this.createBusinessesUI();
+    this.createBusinessLogos();
+    this.createBusinessStats();
   }
 
-  setBackground(): void {
+  private setBackground(): void {
     this.cameras.main.setBackgroundColor(canvasColor);
 
     this.background = this.add.image(
@@ -59,7 +60,7 @@ export default class Game extends Phaser.Scene {
     this.background.alpha = 0.05;
   }
 
-  setSideMenu(): void {
+  private setSideMenu(): void {
     this.graphics = this.add.graphics();
 
     this.graphics.lineStyle(borderWidth, menuBgColor, menuBgAlpha);
@@ -89,9 +90,10 @@ export default class Game extends Phaser.Scene {
     });
   }
 
-  createBusinesses(): void {
+  private createBusinesses(): void {
     BUSINESS_INFO.forEach((business, index: number) => {
       this.businesses.push(new business.model(
+        business.name,
         business.price,
         business.profit,
         business.interval,
@@ -101,7 +103,7 @@ export default class Game extends Phaser.Scene {
     });
   }
 
-  createBusinessesUI(): void {
+  private createBusinessLogos(): void {
     this.businesses.forEach((business: BaseBusiness) => {
       const businessLogo = this.add.image(
         business.positionX,
@@ -111,6 +113,52 @@ export default class Game extends Phaser.Scene {
 
       businessLogo.displayHeight = BUSINESSES_GUI.logoSize;
       businessLogo.scaleX = businessLogo.scaleY;
+    });
+  }
+
+  private createBusinessStats(): void {
+    this.businesses.forEach((business: BaseBusiness) => {
+      const stats = {
+        name: this.add.text(
+          business.positionX - (BUSINESSES_GUI.logoSize / 2),
+          business.positionY - BUSINESSES_GUI.nameOffsetY,
+          business.name,
+          BUSINESSES_GUI.businessFont
+        ),
+        profit: this.add.text(
+          business.positionX + 75,
+          business.positionY,
+          null,
+          BUSINESSES_GUI.businessFont
+        ),
+        interval: this.add.text(
+          business.positionX + 75,
+          business.positionY + 15,
+          null,
+          BUSINESSES_GUI.businessFont
+        ),
+        level: this.add.text(
+          business.positionX + 75,
+          business.positionY + 30,
+          null,
+          BUSINESSES_GUI.businessFont
+        ),
+        price: this.add.text(
+          business.positionX + 75,
+          business.positionY + 45,
+          null,
+          BUSINESSES_GUI.businessFont
+        ),
+        alert: this.add.text(
+          business.positionX + 5,
+          business.positionY + 45,
+          null,
+          BUSINESSES_GUI.businessFont
+        ),
+        progress: new Phaser.GameObjects.Line(this, 0, 0, 0)
+      };
+
+      business.graphicStats = stats;
     });
   }
 }

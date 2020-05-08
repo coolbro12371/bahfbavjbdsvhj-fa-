@@ -8,6 +8,7 @@ import { WayneIndustriesBusiness } from '../classes/WayneIndustriesBusiness';
 
 export interface BusinessInfo {
   model: typeof BaseBusiness;
+  name: string;
   price: number;
   profit: number;
   interval: number;
@@ -17,6 +18,7 @@ export interface BusinessInfo {
 export const BUSINESS_INFO: BusinessInfo[] = [
   {
     model: ConvenienceStoreBusiness,
+    name: 'Convenience Store',
     price: 100,
     profit: 85,
     interval: 12000,
@@ -24,6 +26,7 @@ export const BUSINESS_INFO: BusinessInfo[] = [
   },
   {
     model: PawnShopBusiness,
+    name: 'Pawn Shop',
     price: 500,
     profit: 450,
     interval: 12000,
@@ -31,6 +34,7 @@ export const BUSINESS_INFO: BusinessInfo[] = [
   },
   {
     model: CarDealershipBusiness,
+    name: 'Pawn Shop',
     price: 2000,
     profit: 1700,
     interval: 12000,
@@ -38,6 +42,7 @@ export const BUSINESS_INFO: BusinessInfo[] = [
   },
   {
     model: ConstructionBusiness,
+    name: 'Construction Company',
     price: 50000,
     profit: 45000,
     interval: 12000,
@@ -45,6 +50,7 @@ export const BUSINESS_INFO: BusinessInfo[] = [
   },
   {
     model: TechBusiness,
+    name: 'Tech Hub',
     price: 1000000,
     profit: 800000,
     interval: 12000,
@@ -52,6 +58,7 @@ export const BUSINESS_INFO: BusinessInfo[] = [
   },
   {
     model: WayneIndustriesBusiness,
+    name: 'Wayne Enterprises',
     price: 50000000,
     profit: 40000000,
     interval: 12000,

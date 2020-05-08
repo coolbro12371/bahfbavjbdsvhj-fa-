@@ -26,7 +26,10 @@ export const BUSINESSES_GUI = {
   leftSideBusinessX: 300,
   rightSideBusinessX: 830,
   firstRowBusinessY: 80,
-  businessFont: '14px Arial',
-  businessFontFill: '0xccc',
-  logoSize: 64
+  businessFont: {
+    font: '14px Arial',
+    fill: '#494848'
+  },
+  logoSize: 64,
+  nameOffsetY: 60
 };
