@@ -15,6 +15,11 @@ export interface BusinessInfo {
   logo: string;
 }
 
+export interface BusinessOption {
+  name: string;
+  logo: string;
+}
+
 export const STARTING_MONEY = 5;
 
 export const BUSINESS_INFO: BusinessInfo[] = [
@@ -66,4 +71,19 @@ export const BUSINESS_INFO: BusinessInfo[] = [
     interval: 12000,
     logo: 'wayne-enterprises'
   },
+];
+
+export const BUSINESS_OPTIONS: BusinessOption[] = [
+  {
+    name: 'Buy',
+    logo: 'buy'
+  },
+  {
+    name: 'Upgrade',
+    logo: 'upgrade'
+  },
+  {
+    name: 'Manager',
+    logo: 'manager'
+  }
 ];

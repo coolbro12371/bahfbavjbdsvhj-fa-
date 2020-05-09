@@ -70,7 +70,8 @@ export class BaseBusiness {
     this.calculateUIPosition();
   }
 
-  onClick(): void {
+  onClick(totalMoney: number): void {
+    // if (this.price > totalMoney) { return; }
     console.log('clicked');
   }
 

@@ -2,7 +2,7 @@ import * as logger from 'js-logger';
 
 import { canvasColor } from '../config/game.config';
 import { BUSINESSES_GUI, SIDEMENU_GUI } from '../config/gui.config';
-import { BUSINESS_INFO, STARTING_MONEY } from '../config/business.config';
+import { BUSINESS_INFO, BUSINESS_OPTIONS, BusinessOption, STARTING_MONEY } from '../config/business.config';
 
 import { BaseBusiness } from '../classes/BaseBusiness';
 
@@ -48,6 +48,7 @@ export default class Game extends Phaser.Scene {
   private background: Phaser.GameObjects.Image;
   private graphics: Phaser.GameObjects.Graphics;
   private totalMoneyIndicator: Phaser.GameObjects.Text;
+  private totalMoney: number;
 
   private businesses: BaseBusiness[] = [];
   private menuOptions: string[] = [
@@ -66,6 +67,7 @@ export default class Game extends Phaser.Scene {
     this.createMoneyIndicator();
     this.createBusinesses();
     this.createBusinessLogos();
+    this.createBusinessOptions();
     this.createBusinessStats();
   }
 
@@ -157,11 +159,23 @@ export default class Game extends Phaser.Scene {
       );
 
       businessLogo.setInteractive();
-      businessLogo.on('pointerup', () => business.onClick());
+      businessLogo.on('pointerup', () => business.onClick(this.totalMoney));
 
       businessLogo.displayHeight = logoSize;
       businessLogo.scaleX = businessLogo.scaleY;
     });
+  }
+
+  private createBusinessOptions(): void {
+    // this.businesses.forEach((business: BaseBusiness) => {
+    //   BUSINESS_OPTIONS.forEach((businessOption: BusinessOption) => {
+    //     const upgrade = this.add.image(
+    //       business.positionX,
+    //       business.positionY,
+    //       business.logo
+    //     )
+    //   });
+    // };
   }
 
   private createBusinessStats(): void {
