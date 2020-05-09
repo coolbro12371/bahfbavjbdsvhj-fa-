@@ -78,7 +78,7 @@ export default class Game extends Phaser.Scene {
   }
 
   update() {
-    this.businesses.forEach((business: BaseBusiness) => business.update());
+    this.businesses.forEach((business: BaseBusiness) => business.update(this.totalMoney));
 
     if (this.totalMoney) {
       this.totalMoneyIndicator.text = this.totalMoney.toFixed(2);
@@ -162,7 +162,7 @@ export default class Game extends Phaser.Scene {
       business.logo.setInteractive();
       business.logo.on(
         'pointerup',
-        async () => this.totalMoney = await business.produce(this.totalMoney)
+        async () => this.totalMoney = await business.produce()
       );
 
       business.logo.displayHeight = logoSize;

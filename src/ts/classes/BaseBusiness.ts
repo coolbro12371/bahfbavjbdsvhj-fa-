@@ -16,7 +16,8 @@ const {
   statsOffsetY,
   progressBarHeight,
   progressBarWidth,
-  businessesGap
+  businessesGap,
+  logoDefaultAlpha
 } = BUSINESSES_GUI;
 
 export class BaseBusiness implements BusinessOperations {
@@ -35,6 +36,7 @@ export class BaseBusiness implements BusinessOperations {
   protected running = false;
   protected startTime: number;
   protected endTime: number;
+  protected totalMoney: number;
 
   get positionX(): number {
     return this._positionX;
@@ -90,7 +92,9 @@ export class BaseBusiness implements BusinessOperations {
     this.calculateUIPosition();
   }
 
-  update(): void {
+  update(totalMoney: number): void {
+    this.totalMoney = totalMoney;
+
     if (this.running) {
       this.calculateProgress();
     } else {
@@ -100,34 +104,33 @@ export class BaseBusiness implements BusinessOperations {
     this.updateGraphicStats();
   }
 
-  buy(totalMoney: number): number {
-    if (totalMoney >= this.price) {
-      const remainingMoney = totalMoney - this._price;
+  buy(): number {
+    if (this.totalMoney >= this.price) {
+      const remainingMoney = this.totalMoney - this._price;
 
       this._numberOfBranches += 1;
       this._price = Math.round(this._price * ACQUIRING_MULTIPLIER * 100) / 100;
       this.acquired = true;
-      this.logo.alpha = 1;
 
       return remainingMoney;
     }
 
-    return totalMoney;
+    return this.totalMoney;
   }
 
-  upgrade(totalMoney: number): number {
+  upgrade(): number {
     console.log('upgrade' + this.name);
 
     return 0;
   }
 
-  hireManager(totalMoney: number): number {
+  hireManager(): number {
     console.log('hireManager' + this.name);
 
     return 0;
   }
 
-  async produce(totalMoney: number): Promise<number> {
+  async produce(): Promise<number> {
     if (!this.acquired) { return; }
 
     if (this.running) { return; }
@@ -142,7 +145,7 @@ export class BaseBusiness implements BusinessOperations {
         this.startTime = 0;
         this.endTime = 0;
 
-        resolve(totalMoney + this._profit * this._numberOfBranches);
+        resolve(this.totalMoney + this._profit * this._numberOfBranches);
       }, this._interval);
     });
   }
@@ -172,6 +175,8 @@ export class BaseBusiness implements BusinessOperations {
   }
 
   private updateGraphicStats(): void {
+    this._logo.alpha = this.totalMoney >= this._price ? 1 : logoDefaultAlpha;
+
     this._graphicStats.price.text = `Price: ${this._price}`;
     this._graphicStats.numberOfBranches.text = `No of branches: ${this._numberOfBranches}`;
     this._graphicStats.profit.text = `Profit: ${this._profit * this._numberOfBranches}`;
