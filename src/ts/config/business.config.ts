@@ -16,7 +16,7 @@ export interface BusinessInfo {
 }
 
 export interface BusinessOption {
-  name: string;
+  operationName: string;
   logo: string;
 }
 
@@ -73,17 +73,22 @@ export const BUSINESS_INFO: BusinessInfo[] = [
   },
 ];
 
+/**
+ * Array of definitions for business operations
+ * Currently operationName must match the BusinessOperation interface props
+ * Check improvements on README.md
+ */
 export const BUSINESS_OPTIONS: BusinessOption[] = [
   {
-    name: 'Buy',
+    operationName: 'buy',
     logo: 'buy'
   },
   {
-    name: 'Upgrade',
+    operationName: 'upgrade',
     logo: 'upgrade'
   },
   {
-    name: 'Manager',
+    operationName: 'hireManager',
     logo: 'manager'
   }
 ];

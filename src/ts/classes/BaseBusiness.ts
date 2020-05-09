@@ -1,6 +1,8 @@
 import { BUSINESSES_GUI } from '../config/gui.config';
 import { BUSINESS_INFO } from '../config/business.config';
 
+import { BusinessOperations } from '../interfaces/BusinessOperations.interface';
+
 interface GraphicStats {
   name: Phaser.GameObjects.Text;
   profit: Phaser.GameObjects.Text;
@@ -9,7 +11,7 @@ interface GraphicStats {
   progress: Phaser.GameObjects.Graphics;
 }
 
-export class BaseBusiness {
+export class BaseBusiness implements BusinessOperations{
   protected _logo: string;
   protected _positionX: number;
   protected _positionY: number;
@@ -73,6 +75,18 @@ export class BaseBusiness {
   onClick(totalMoney: number): void {
     // if (this.price > totalMoney) { return; }
     console.log('clicked');
+  }
+
+  buy(): void {
+
+  }
+
+  upgrade(): void {
+
+  }
+
+  hireManager(): void {
+
   }
 
   private calculateUIPosition(): void {
