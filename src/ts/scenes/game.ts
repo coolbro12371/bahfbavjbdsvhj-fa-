@@ -2,7 +2,7 @@ import * as logger from 'js-logger';
 
 import { canvasColor } from '../config/game.config';
 import { BUSINESSES_GUI, SIDEMENU_GUI } from '../config/gui.config';
-import { BUSINESS_INFO } from '../config/business.config';
+import { BUSINESS_INFO, STARTING_MONEY } from '../config/business.config';
 
 import { BaseBusiness } from '../classes/BaseBusiness';
 
@@ -27,9 +27,26 @@ const {
   menuWidth,
 } = SIDEMENU_GUI;
 
+const {
+  businessFont,
+  logoSize,
+  nameOffsetY,
+  moneyIndicatorX,
+  moneyIndicatorY,
+  moneyIndicatorTitle,
+  moneyIndicatorFont,
+  statsOffsetX,
+  statsOffsetY,
+  progressBarHeight,
+  progressBarWidth,
+  progressBarBorderColor,
+  progressBarBorderAlpha,
+} = BUSINESSES_GUI;
+
 export default class Game extends Phaser.Scene {
   private background: Phaser.GameObjects.Image;
   private graphics: Phaser.GameObjects.Graphics;
+  private totalMoneyIndicator: Phaser.GameObjects.Text;
 
   private businesses: BaseBusiness[] = [];
   private menuOptions: string[] = [
@@ -49,6 +66,16 @@ export default class Game extends Phaser.Scene {
     this.createBusinesses();
     this.createBusinessLogos();
     this.createBusinessStats();
+  }
+
+  update() {
+    // this.businesses.forEach((business: BaseBusiness) => business.update());
+  }
+
+  render() {
+    // this.totalMoneyIndicator.text = this.game.money.toFixed(2);
+    //
+    // this.businesses.forEach((business: BaseBusiness) => business.render());
   }
 
   private setBackground(): void {
@@ -93,10 +120,17 @@ export default class Game extends Phaser.Scene {
 
   private createMoneyIndicator(): void {
     this.add.text(
-      BUSINESSES_GUI.moneyIndicatorX,
-      BUSINESSES_GUI.moneyIndicatorY,
-      BUSINESSES_GUI.moneyIndicatorTitle,
-      BUSINESSES_GUI.moneyIndicatorFont
+      moneyIndicatorX,
+      moneyIndicatorY,
+      moneyIndicatorTitle,
+      moneyIndicatorFont
+    );
+
+    this.totalMoneyIndicator = this.add.text(
+      moneyIndicatorX + 150,
+      moneyIndicatorY,
+      STARTING_MONEY.toString(),
+      moneyIndicatorFont
     );
   }
 
@@ -124,7 +158,7 @@ export default class Game extends Phaser.Scene {
       businessLogo.setInteractive();
       businessLogo.on('pointerup', () => business.onClick());
 
-      businessLogo.displayHeight = BUSINESSES_GUI.logoSize;
+      businessLogo.displayHeight = logoSize;
       businessLogo.scaleX = businessLogo.scaleY;
     });
   }
@@ -133,43 +167,43 @@ export default class Game extends Phaser.Scene {
     this.businesses.forEach((business: BaseBusiness) => {
       const stats = {
         name: this.add.text(
-          business.positionX - (BUSINESSES_GUI.logoSize / 2),
-          business.positionY - BUSINESSES_GUI.nameOffsetY,
+          business.positionX - (logoSize / 2),
+          business.positionY - nameOffsetY,
           business.name,
-          BUSINESSES_GUI.businessFont
+          businessFont
         ),
         profit: this.add.text(
-          business.positionX + BUSINESSES_GUI.statsOffsetX,
+          business.positionX + statsOffsetX,
           business.positionY,
           `Profit: ${business.profit}`,
-          BUSINESSES_GUI.businessFont
+          businessFont
         ),
         interval: this.add.text(
-          business.positionX + BUSINESSES_GUI.statsOffsetX,
-          business.positionY + BUSINESSES_GUI.statsOffsetY,
+          business.positionX + statsOffsetX,
+          business.positionY + statsOffsetY,
           `Remaining: ${business.interval}`,
-          BUSINESSES_GUI.businessFont
+          businessFont
         ),
         price: this.add.text(
-          business.positionX + BUSINESSES_GUI.statsOffsetX,
-          business.positionY + (2 * BUSINESSES_GUI.statsOffsetY),
+          business.positionX + statsOffsetX,
+          business.positionY + (2 * statsOffsetY),
           `Price: ${ business.price.toString()}`,
-          BUSINESSES_GUI.businessFont
+          businessFont
         ),
         progress: this.graphics.fillRect(
-          business.positionX + BUSINESSES_GUI.statsOffsetX,
-          business.positionY - BUSINESSES_GUI.statsOffsetY,
-          BUSINESSES_GUI.progressBarWidth,
-          BUSINESSES_GUI.progressBarHeight,
+          business.positionX + statsOffsetX,
+          business.positionY - statsOffsetY,
+          progressBarWidth,
+          progressBarHeight,
          )
       };
 
-      this.graphics.lineStyle(borderWidth, BUSINESSES_GUI.progressBarBorderColor, BUSINESSES_GUI.progressBarBorderAlpha);
+      this.graphics.lineStyle(borderWidth, progressBarBorderColor, progressBarBorderAlpha);
       this.graphics.strokeRect(
-        business.positionX + BUSINESSES_GUI.statsOffsetX,
-        business.positionY - BUSINESSES_GUI.statsOffsetY,
-        BUSINESSES_GUI.progressBarWidth + 1,
-        BUSINESSES_GUI.progressBarHeight + 1,
+        business.positionX + statsOffsetX,
+        business.positionY - statsOffsetY,
+        progressBarWidth + 1,
+        progressBarHeight + 1,
       );
 
       business.graphicStats = stats;

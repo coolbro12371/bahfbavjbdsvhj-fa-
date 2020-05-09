@@ -12,7 +12,6 @@ import * as gameConfig from './config/game.config';
 
 import PhaserStatsGame from './classes/PhaserStatsGame';
 
-import Boot from './scenes/boot';
 import Preloader from './scenes/preloader';
 import Game from './scenes/game';
 
@@ -50,7 +49,6 @@ if (gameConfig.stats && process.env.NODE_ENV !== 'production') {
  * Registering game scenes
  */
 const initialScenes = {
-  boot: Boot,
   preloader: Preloader,
   game: Game
 };
@@ -59,4 +57,4 @@ Object.entries(initialScenes).forEach((entry: any[]) => {
   game.scene.add(entry[0], entry[1]);
 });
 
-game.scene.start('boot');
+game.scene.start('preloader');

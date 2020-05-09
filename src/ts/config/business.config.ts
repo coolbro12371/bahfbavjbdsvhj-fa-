@@ -15,6 +15,8 @@ export interface BusinessInfo {
   logo: string;
 }
 
+export const STARTING_MONEY = 5;
+
 export const BUSINESS_INFO: BusinessInfo[] = [
   {
     model: ConvenienceStoreBusiness,
@@ -34,7 +36,7 @@ export const BUSINESS_INFO: BusinessInfo[] = [
   },
   {
     model: CarDealershipBusiness,
-    name: 'Pawn Shop',
+    name: 'Car Dealership',
     price: 2000,
     profit: 1700,
     interval: 12000,
