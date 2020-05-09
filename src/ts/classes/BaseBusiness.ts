@@ -107,6 +107,8 @@ export class BaseBusiness implements BusinessOperations {
   update(): void {
     if (this.running) {
       this.calculateProgress();
+    } else {
+      this._graphicStats.progress.clear();
     }
   }
 
