@@ -10,7 +10,7 @@ export const SIDEMENU_GUI = {
   buttonAlpha: 0.9,
   buttonOriginX: 0.5,
   buttonOriginY: 0.5,
-  buttonFont: 'bold 20px Arial',
+  buttonFont: 'bold 20px Georgia',
   buttonFontFill: '#000',
   borderWidth: 1,
   menuBgColor: 0xe7f1f7,
@@ -26,8 +26,12 @@ export const BUSINESSES_GUI = {
   leftSideBusinessX: 300,
   rightSideBusinessX: 830,
   firstRowBusinessY: 80,
+  businessTitleFont: {
+    font: 'bold 16px Georgia',
+    fill: '#494848'
+  },
   businessFont: {
-    font: '14px Arial',
+    font: '14px Georgia',
     fill: '#494848'
   },
   logoSize: 64,

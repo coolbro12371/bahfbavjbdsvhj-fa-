@@ -28,6 +28,7 @@ const {
 } = SIDEMENU_GUI;
 
 const {
+  businessTitleFont,
   businessFont,
   logoSize,
   nameOffsetY,
@@ -170,7 +171,7 @@ export default class Game extends Phaser.Scene {
           business.positionX - (logoSize / 2),
           business.positionY - nameOffsetY,
           business.name,
-          businessFont
+          businessTitleFont
         ),
         profit: this.add.text(
           business.positionX + statsOffsetX,
