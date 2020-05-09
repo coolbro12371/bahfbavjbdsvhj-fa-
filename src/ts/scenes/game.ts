@@ -6,6 +6,8 @@ import { BUSINESS_INFO, BUSINESS_OPERATIONS, BusinessOperation, STARTING_MONEY }
 
 import { BaseBusiness } from '../classes/BaseBusiness';
 
+import { GraphicStats } from '../interfaces/common.interface';
+
 const {
   buttonWidth,
   buttonHeight,
@@ -78,7 +80,9 @@ export default class Game extends Phaser.Scene {
   update() {
     this.businesses.forEach((business: BaseBusiness) => business.update());
 
-    this.totalMoneyIndicator.text = this.totalMoney.toFixed(2);
+    if (this.totalMoney) {
+      this.totalMoneyIndicator.text = this.totalMoney.toFixed(2);
+    }
   }
 
   private setBackground(): void {
@@ -190,7 +194,7 @@ export default class Game extends Phaser.Scene {
 
   private createBusinessStats(): void {
     this.businesses.forEach((business: BaseBusiness) => {
-      const stats = {
+      const stats: GraphicStats = {
         name: this.add.text(
           business.positionX - (logoSize / 2),
           business.positionY - nameOffsetY,
@@ -200,19 +204,19 @@ export default class Game extends Phaser.Scene {
         profit: this.add.text(
           business.positionX + statsOffsetX,
           business.positionY,
-          `Profit: ${business.profit}`,
+          `${business.profit}`,
           businessFont
         ),
-        interval: this.add.text(
+        numberOfBranches: this.add.text(
           business.positionX + statsOffsetX,
           business.positionY + statsOffsetY,
-          `Remaining: ${business.interval}`,
+          `${business.numberOfBranches}`,
           businessFont
         ),
         price: this.add.text(
           business.positionX + statsOffsetX,
           business.positionY + (2 * statsOffsetY),
-          `Price: ${ business.price.toString()}`,
+          `${ business.price.toString()}`,
           businessFont
         ),
         progress: this.add.graphics()

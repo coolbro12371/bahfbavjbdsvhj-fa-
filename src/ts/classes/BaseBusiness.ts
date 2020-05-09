@@ -6,14 +6,7 @@ import {
 } from '../config/business.config';
 
 import { BusinessOperations } from '../interfaces/BusinessOperations.interface';
-
-interface GraphicStats {
-  name: Phaser.GameObjects.Text;
-  profit: Phaser.GameObjects.Text;
-  interval: Phaser.GameObjects.Text;
-  price: Phaser.GameObjects.Text;
-  progress: Phaser.GameObjects.Graphics;
-}
+import { GraphicStats } from '../interfaces/common.interface';
 
 const {
   leftSideBusinessX,
@@ -35,6 +28,7 @@ export class BaseBusiness implements BusinessOperations {
   protected _price: number;
   protected _profit: number;
   protected _interval: number;
+  protected _numberOfBranches: number;
   protected businessValueFactor: number;
 
   protected acquired = false;
@@ -70,6 +64,10 @@ export class BaseBusiness implements BusinessOperations {
     return this._interval;
   }
 
+  get numberOfBranches(): number {
+    return this._numberOfBranches;
+  }
+
   set graphicStats(stats: GraphicStats) {
     this._graphicStats = stats;
   }
@@ -87,20 +85,34 @@ export class BaseBusiness implements BusinessOperations {
     this._price = price;
     this._profit = profit;
     this._interval = interval;
+    this._numberOfBranches = 0;
     this.businessValueFactor = businessValueFactor;
     this.calculateUIPosition();
+  }
+
+  update(): void {
+    if (this.running) {
+      this.calculateProgress();
+    } else {
+      this._graphicStats.progress.clear();
+    }
+
+    this.updateGraphicStats();
   }
 
   buy(totalMoney: number): number {
     if (totalMoney >= this.price) {
       const remainingMoney = totalMoney - this._price;
 
-      this._price = this._price * ACQUIRING_MULTIPLIER;
+      this._numberOfBranches += 1;
+      this._price = Math.round(this._price * ACQUIRING_MULTIPLIER * 100) / 100;
       this.acquired = true;
       this.logo.alpha = 1;
 
       return remainingMoney;
     }
+
+    return totalMoney;
   }
 
   upgrade(totalMoney: number): number {
@@ -115,14 +127,6 @@ export class BaseBusiness implements BusinessOperations {
     return 0;
   }
 
-  update(): void {
-    if (this.running) {
-      this.calculateProgress();
-    } else {
-      this._graphicStats.progress.clear();
-    }
-  }
-
   async produce(totalMoney: number): Promise<number> {
     if (!this.acquired) { return; }
 
@@ -130,7 +134,7 @@ export class BaseBusiness implements BusinessOperations {
 
     this.running = true;
     this.startTime = new Date().getTime();
-    this.endTime = this.startTime + this.interval;
+    this.endTime = this.startTime + this._interval;
 
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -138,8 +142,8 @@ export class BaseBusiness implements BusinessOperations {
         this.startTime = 0;
         this.endTime = 0;
 
-        resolve(totalMoney + this.profit);
-      }, this.interval);
+        resolve(totalMoney + this._profit * this._numberOfBranches);
+      }, this._interval);
     });
   }
 
@@ -165,5 +169,11 @@ export class BaseBusiness implements BusinessOperations {
       progressBarWidth * progressFraction,
       progressBarHeight
     );
+  }
+
+  private updateGraphicStats(): void {
+    this._graphicStats.price.text = `Price: ${this._price}`;
+    this._graphicStats.numberOfBranches.text = `No of branches: ${this._numberOfBranches}`;
+    this._graphicStats.profit.text = `Profit: ${this._profit * this._numberOfBranches}`;
   }
 }
