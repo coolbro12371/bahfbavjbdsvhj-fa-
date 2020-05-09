@@ -12,7 +12,7 @@ interface GraphicStats {
 }
 
 export class BaseBusiness implements BusinessOperations {
-  protected _logo: string;
+  protected _logo: Phaser.GameObjects.Image;
   protected _positionX: number;
   protected _positionY: number;
   protected _graphicStats: GraphicStats;
@@ -32,7 +32,7 @@ export class BaseBusiness implements BusinessOperations {
     return this._positionY;
   }
 
-  get logo(): string {
+  get logo(): Phaser.GameObjects.Image {
     return this._logo;
   }
 
@@ -61,7 +61,7 @@ export class BaseBusiness implements BusinessOperations {
     price: number,
     profit: number,
     interval: number,
-    logo: string,
+    logo: Phaser.GameObjects.Image,
     businessValueFactor: number
   ) {
     this._name = name;
@@ -87,6 +87,7 @@ export class BaseBusiness implements BusinessOperations {
     if (totalMoney >= this.price) {
       this._price = this._price * 2;
       this.acquired = true;
+      this.logo.alpha = 1;
       // this.start();
 
       return totalMoney - this._price / 2;

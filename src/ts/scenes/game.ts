@@ -145,7 +145,7 @@ export default class Game extends Phaser.Scene {
         business.price,
         business.profit,
         business.interval,
-        business.logo,
+        this.add.image( 0, 0, business.logo),
         index
       ));
     });
@@ -153,26 +153,17 @@ export default class Game extends Phaser.Scene {
 
   private createBusinessLogos(): void {
     this.businesses.forEach((business: BaseBusiness) => {
-      const businessLogo = this.add.image(
-        business.positionX,
-        business.positionY,
-        business.logo
-      );
+      business.logo.setPosition(business.positionX, business.positionY);
 
-      this.businessIndicators[business.name] = businessLogo;
-
-      businessLogo.alpha = logoDefaultAlpha;
-      businessLogo.setInteractive();
-      businessLogo.on(
+      business.logo.alpha = logoDefaultAlpha;
+      business.logo.setInteractive();
+      business.logo.on(
         'pointerup',
-        () => {
-          this.totalMoney = business.onClick(this.totalMoney);
-          this.businessIndicators[business.name].alpha = 1;
-        }
+        () => this.totalMoney = business.onClick(this.totalMoney)
       );
 
-      businessLogo.displayHeight = logoSize;
-      businessLogo.scaleX = businessLogo.scaleY;
+      business.logo.displayHeight = logoSize;
+      business.logo.scaleX = business.logo.scaleY;
     });
   }
 
