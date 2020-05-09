@@ -1,5 +1,9 @@
 import { BUSINESSES_GUI } from '../config/gui.config';
-import { BUSINESS_INFO } from '../config/business.config';
+import {
+  BUSINESS_INFO,
+  UPGRADE_MULTIPLIER,
+  ACQUIRING_MULTIPLIER
+} from '../config/business.config';
 
 import { BusinessOperations } from '../interfaces/BusinessOperations.interface';
 
@@ -23,6 +27,9 @@ export class BaseBusiness implements BusinessOperations {
   protected businessValueFactor: number;
 
   protected acquired = false;
+  protected running = false;
+  protected startTime: number;
+  protected endTime: number;
 
   get positionX(): number {
     return this._positionX;
@@ -73,24 +80,15 @@ export class BaseBusiness implements BusinessOperations {
     this.calculateUIPosition();
   }
 
-  onClick(totalMoney: number): number {
-    if (!this.acquired) {
-      return this.buy(totalMoney);
-    } else {
-      this.produce();
-
-      return totalMoney;
-    }
-  }
-
   buy(totalMoney: number): number {
     if (totalMoney >= this.price) {
-      this._price = this._price * 2;
+      const remainingMoney = totalMoney - this._price;
+
+      this._price = this._price * ACQUIRING_MULTIPLIER;
       this.acquired = true;
       this.logo.alpha = 1;
-      // this.start();
 
-      return totalMoney - this._price / 2;
+      return remainingMoney;
     }
   }
 
@@ -110,8 +108,22 @@ export class BaseBusiness implements BusinessOperations {
 
   }
 
-  private produce() {
+  async produce(totalMoney: number): Promise<number> {
+    if (!this.acquired) { return; }
 
+    if (this.running) { return; }
+
+    this.running = true;
+    this.startTime = new Date().getTime();
+    this.endTime = this.startTime + this.interval;
+
+    await setTimeout(() => {
+      this.running = false;
+      this.startTime = 0;
+      this.endTime = 0;
+    }, this.interval);
+
+    return totalMoney + this.profit;
   }
 
   private calculateUIPosition(): void {

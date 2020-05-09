@@ -20,7 +20,9 @@ export interface BusinessOperation {
   logo: string;
 }
 
-export const STARTING_MONEY = 400;
+export const STARTING_MONEY = 400 ;
+export const UPGRADE_MULTIPLIER = 1.25;
+export const ACQUIRING_MULTIPLIER = 1.25;
 
 export const BUSINESS_INFO: BusinessInfo[] = [
   {

@@ -72,7 +72,7 @@ export default class Game extends Phaser.Scene {
     this.createMoneyIndicator();
     this.createBusinesses();
     this.createBusinessLogos();
-    this.createBusinessOptions();
+    this.createBusinessOperations();
     this.createBusinessStats();
   }
 
@@ -159,7 +159,7 @@ export default class Game extends Phaser.Scene {
       business.logo.setInteractive();
       business.logo.on(
         'pointerup',
-        () => this.totalMoney = business.onClick(this.totalMoney)
+        async () => this.totalMoney = await business.produce(this.totalMoney)
       );
 
       business.logo.displayHeight = logoSize;
@@ -167,7 +167,7 @@ export default class Game extends Phaser.Scene {
     });
   }
 
-  private createBusinessOptions(): void {
+  private createBusinessOperations(): void {
     this.businesses.forEach((business: BaseBusiness) => {
       BUSINESS_OPERATIONS.forEach((businessOperation: BusinessOperation, index: number) => {
         const operation = this.add.image(
@@ -180,7 +180,7 @@ export default class Game extends Phaser.Scene {
         operation.on(
           'pointerup',
           // @ts-ignore
-          () => this.totalMoney = [businessOperation.operationName](this.totalMoney)
+          () => this.totalMoney = business[businessOperation.operationName](this.totalMoney)
         );
 
         operation.displayHeight = operationLogoSize;
