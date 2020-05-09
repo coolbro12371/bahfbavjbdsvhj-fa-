@@ -31,6 +31,7 @@ const {
   businessTitleFont,
   businessFont,
   logoSize,
+  logoDefaultAlpha,
   nameOffsetY,
   moneyIndicatorX,
   moneyIndicatorY,
@@ -51,9 +52,10 @@ export default class Game extends Phaser.Scene {
   private background: Phaser.GameObjects.Image;
   private graphics: Phaser.GameObjects.Graphics;
   private totalMoneyIndicator: Phaser.GameObjects.Text;
-  private totalMoney: number;
 
+  private totalMoney = STARTING_MONEY;
   private businesses: BaseBusiness[] = [];
+  private businessIndicators: { [name: string]: Phaser.GameObjects.Image } = {};
   private menuOptions: string[] = [
     'Managers',
     'Upgrades',
@@ -75,13 +77,9 @@ export default class Game extends Phaser.Scene {
   }
 
   update() {
-    // this.businesses.forEach((business: BaseBusiness) => business.update());
-  }
+    this.businesses.forEach((business: BaseBusiness) => business.update());
 
-  render() {
-    // this.totalMoneyIndicator.text = this.game.money.toFixed(2);
-    //
-    // this.businesses.forEach((business: BaseBusiness) => business.render());
+    this.totalMoneyIndicator.text = this.totalMoney.toFixed(2);
   }
 
   private setBackground(): void {
@@ -161,8 +159,17 @@ export default class Game extends Phaser.Scene {
         business.logo
       );
 
+      this.businessIndicators[business.name] = businessLogo;
+
+      businessLogo.alpha = logoDefaultAlpha;
       businessLogo.setInteractive();
-      businessLogo.on('pointerup', () => business.onClick(this.totalMoney));
+      businessLogo.on(
+        'pointerup',
+        () => {
+          this.totalMoney = business.onClick(this.totalMoney);
+          this.businessIndicators[business.name].alpha = 1;
+        }
+      );
 
       businessLogo.displayHeight = logoSize;
       businessLogo.scaleX = businessLogo.scaleY;
@@ -176,6 +183,13 @@ export default class Game extends Phaser.Scene {
           business.positionX - operationOffsetX,
           business.positionY - logoSize / 2 + operationOffsetY * index,
           businessOperation.logo
+        );
+
+        operation.setInteractive();
+        operation.on(
+          'pointerup',
+          // @ts-ignore
+          () => this.totalMoney = [businessOperation.operationName](this.totalMoney)
         );
 
         operation.displayHeight = operationLogoSize;

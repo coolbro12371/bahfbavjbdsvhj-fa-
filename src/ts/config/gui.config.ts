@@ -35,12 +35,13 @@ export const BUSINESSES_GUI = {
     fill: '#494848'
   },
   logoSize: 64,
+  logoDefaultAlpha: 0.4,
   nameOffsetY: 60,
   moneyIndicatorX: 250,
   moneyIndicatorY: 700,
   moneyIndicatorTitle: 'MONEY',
   moneyIndicatorFont: {
-    font: '32px Tahoma',
+    font: 'bold 32px Georgia',
     fill: '#000'
   },
   statsOffsetX: 75,

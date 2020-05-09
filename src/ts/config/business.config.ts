@@ -20,7 +20,7 @@ export interface BusinessOperation {
   logo: string;
 }
 
-export const STARTING_MONEY = 5;
+export const STARTING_MONEY = 400;
 
 export const BUSINESS_INFO: BusinessInfo[] = [
   {

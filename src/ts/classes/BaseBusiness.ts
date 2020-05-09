@@ -11,7 +11,7 @@ interface GraphicStats {
   progress: Phaser.GameObjects.Graphics;
 }
 
-export class BaseBusiness implements BusinessOperations{
+export class BaseBusiness implements BusinessOperations {
   protected _logo: string;
   protected _positionX: number;
   protected _positionY: number;
@@ -20,8 +20,9 @@ export class BaseBusiness implements BusinessOperations{
   protected _price: number;
   protected _profit: number;
   protected _interval: number;
-
   protected businessValueFactor: number;
+
+  protected acquired = false;
 
   get positionX(): number {
     return this._positionX;
@@ -72,20 +73,43 @@ export class BaseBusiness implements BusinessOperations{
     this.calculateUIPosition();
   }
 
-  onClick(totalMoney: number): void {
-    // if (this.price > totalMoney) { return; }
-    console.log('clicked');
+  onClick(totalMoney: number): number {
+    if (!this.acquired) {
+      return this.buy(totalMoney);
+    } else {
+      this.produce();
+
+      return totalMoney;
+    }
   }
 
-  buy(): void {
+  buy(totalMoney: number): number {
+    if (totalMoney >= this.price) {
+      this._price = this._price * 2;
+      this.acquired = true;
+      // this.start();
+
+      return totalMoney - this._price / 2;
+    }
+  }
+
+  upgrade(totalMoney: number): number {
+    console.log('upgrade' + this.name);
+
+    return 0;
+  }
+
+  hireManager(totalMoney: number): number {
+    console.log('hireManager' + this.name);
+
+    return 0;
+  }
+
+  update(): void {
 
   }
 
-  upgrade(): void {
-
-  }
-
-  hireManager(): void {
+  private produce() {
 
   }
 

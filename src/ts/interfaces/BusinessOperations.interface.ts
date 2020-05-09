@@ -1,5 +1,5 @@
 export interface BusinessOperations {
-  buy(): void;
-  upgrade(): void;
-  hireManager(): void;
+  buy(totalMoney: number): number;
+  upgrade(totalMoney: number): number;
+  hireManager(totalMoney: number): number;
 }
