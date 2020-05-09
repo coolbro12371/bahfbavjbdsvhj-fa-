@@ -30,7 +30,7 @@ export const BUSINESS_INFO: BusinessInfo[] = [
     name: 'Convenience Store',
     price: 100,
     profit: 85,
-    interval: 12000,
+    interval: 1000,
     logo: 'convenience-store'
   },
   {
@@ -38,7 +38,7 @@ export const BUSINESS_INFO: BusinessInfo[] = [
     name: 'Pawn Shop',
     price: 500,
     profit: 450,
-    interval: 12000,
+    interval: 10000,
     logo: 'pawn-shop'
   },
   {
@@ -46,7 +46,7 @@ export const BUSINESS_INFO: BusinessInfo[] = [
     name: 'Car Dealership',
     price: 2000,
     profit: 1700,
-    interval: 12000,
+    interval: 30000,
     logo: 'car-dealership'
   },
   {
@@ -54,7 +54,7 @@ export const BUSINESS_INFO: BusinessInfo[] = [
     name: 'Construction Company',
     price: 50000,
     profit: 45000,
-    interval: 12000,
+    interval: 60000,
     logo: 'construction'
   },
   {
@@ -62,7 +62,7 @@ export const BUSINESS_INFO: BusinessInfo[] = [
     name: 'Tech Hub',
     price: 1000000,
     profit: 800000,
-    interval: 12000,
+    interval: 120000,
     logo: 'tech'
   },
   {
