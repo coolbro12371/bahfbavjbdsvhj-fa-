@@ -6,7 +6,7 @@ interface GraphicStats {
   profit: Phaser.GameObjects.Text;
   interval: Phaser.GameObjects.Text;
   price: Phaser.GameObjects.Text;
-  progress: Phaser.GameObjects.Line;
+  progress: Phaser.GameObjects.Graphics;
 }
 
 export class BaseBusiness {

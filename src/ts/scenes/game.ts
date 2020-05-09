@@ -41,6 +41,8 @@ export default class Game extends Phaser.Scene {
   create(): void {
     logger.info('Game enter');
 
+    this.graphics = this.add.graphics();
+
     this.setBackground();
     this.setSideMenu();
     this.createMoneyIndicator();
@@ -62,8 +64,6 @@ export default class Game extends Phaser.Scene {
   }
 
   private setSideMenu(): void {
-    this.graphics = this.add.graphics();
-
     this.graphics.lineStyle(borderWidth, menuBgColor, menuBgAlpha);
     this.graphics.fillStyle(menuBgColor, menuBgAlpha);
     this.graphics.fillRect(menuX, menuY, menuWidth, menuHeight);
@@ -156,8 +156,21 @@ export default class Game extends Phaser.Scene {
           `Price: ${ business.price.toString()}`,
           BUSINESSES_GUI.businessFont
         ),
-        progress: new Phaser.GameObjects.Line(this, 0, 0, 0)
+        progress: this.graphics.fillRect(
+          business.positionX + BUSINESSES_GUI.statsOffsetX,
+          business.positionY - BUSINESSES_GUI.statsOffsetY,
+          BUSINESSES_GUI.progressBarWidth,
+          BUSINESSES_GUI.progressBarHeight,
+         )
       };
+
+      this.graphics.lineStyle(borderWidth, BUSINESSES_GUI.progressBarBorderColor, BUSINESSES_GUI.progressBarBorderAlpha);
+      this.graphics.strokeRect(
+        business.positionX + BUSINESSES_GUI.statsOffsetX,
+        business.positionY - BUSINESSES_GUI.statsOffsetY,
+        BUSINESSES_GUI.progressBarWidth + 1,
+        BUSINESSES_GUI.progressBarHeight + 1,
+      );
 
       business.graphicStats = stats;
     });

@@ -40,5 +40,9 @@ export const BUSINESSES_GUI = {
     fill: '#000'
   },
   statsOffsetX: 75,
-  statsOffsetY: 20
+  statsOffsetY: 30,
+  progressBarHeight: 20,
+  progressBarWidth: 200,
+  progressBarBorderColor: 0x000000,
+  progressBarBorderAlpha: 1,
 };
