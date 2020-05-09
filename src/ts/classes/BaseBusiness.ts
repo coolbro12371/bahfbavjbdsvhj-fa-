@@ -117,13 +117,15 @@ export class BaseBusiness implements BusinessOperations {
     this.startTime = new Date().getTime();
     this.endTime = this.startTime + this.interval;
 
-    await setTimeout(() => {
-      this.running = false;
-      this.startTime = 0;
-      this.endTime = 0;
-    }, this.interval);
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        this.running = false;
+        this.startTime = 0;
+        this.endTime = 0;
 
-    return totalMoney + this.profit;
+        resolve(totalMoney + this.profit);
+      }, this.interval);
+    });
   }
 
   private calculateUIPosition(): void {
