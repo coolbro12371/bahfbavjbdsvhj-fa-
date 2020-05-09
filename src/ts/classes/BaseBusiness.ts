@@ -105,7 +105,9 @@ export class BaseBusiness implements BusinessOperations {
   }
 
   update(): void {
-
+    if (this.running) {
+      this.calculateProgress();
+    }
   }
 
   async produce(totalMoney: number): Promise<number> {
@@ -137,5 +139,18 @@ export class BaseBusiness implements BusinessOperations {
     this._positionY = this.businessValueFactor < businessColumnSize ?
       (this.businessValueFactor) * BUSINESSES_GUI.businessesGap + BUSINESSES_GUI.firstRowBusinessY :
       (this.businessValueFactor % businessColumnSize ) * BUSINESSES_GUI.businessesGap + BUSINESSES_GUI.firstRowBusinessY;
+  }
+
+  private calculateProgress(): void {
+    const currentTime = this.endTime - new Date().getTime();
+    const progressFraction = (this.interval - currentTime) / this.interval;
+
+    this._graphicStats.progress.clear();
+    this._graphicStats.progress.fillRect(
+      this.positionX + BUSINESSES_GUI.statsOffsetX,
+      this.positionY - BUSINESSES_GUI.statsOffsetY,
+      BUSINESSES_GUI.progressBarWidth * progressFraction,
+      BUSINESSES_GUI.progressBarHeight
+    );
   }
 }

@@ -50,12 +50,11 @@ const {
 
 export default class Game extends Phaser.Scene {
   private background: Phaser.GameObjects.Image;
-  private graphics: Phaser.GameObjects.Graphics;
+  private sceneGraphics: Phaser.GameObjects.Graphics;
   private totalMoneyIndicator: Phaser.GameObjects.Text;
 
   private totalMoney = STARTING_MONEY;
   private businesses: BaseBusiness[] = [];
-  private businessIndicators: { [name: string]: Phaser.GameObjects.Image } = {};
   private menuOptions: string[] = [
     'Managers',
     'Upgrades',
@@ -65,7 +64,7 @@ export default class Game extends Phaser.Scene {
   create(): void {
     logger.info('Game enter');
 
-    this.graphics = this.add.graphics();
+    this.sceneGraphics = this.add.graphics();
 
     this.setBackground();
     this.setSideMenu();
@@ -95,9 +94,9 @@ export default class Game extends Phaser.Scene {
   }
 
   private setSideMenu(): void {
-    this.graphics.lineStyle(borderWidth, menuBgColor, menuBgAlpha);
-    this.graphics.fillStyle(menuBgColor, menuBgAlpha);
-    this.graphics.fillRect(menuX, menuY, menuWidth, menuHeight);
+    this.sceneGraphics.lineStyle(borderWidth, menuBgColor, menuBgAlpha);
+    this.sceneGraphics.fillStyle(menuBgColor, menuBgAlpha);
+    this.sceneGraphics.fillRect(menuX, menuY, menuWidth, menuHeight);
 
     this.menuOptions.forEach((option, i) => {
       const position = {
@@ -105,8 +104,8 @@ export default class Game extends Phaser.Scene {
         y: buttonOffsetY + (i * buttonGap)
       };
 
-      this.graphics.fillStyle(buttonColor, buttonAlpha);
-      this.graphics.fillRoundedRect(position.x, position.y, buttonWidth, buttonHeight);
+      this.sceneGraphics.fillStyle(buttonColor, buttonAlpha);
+      this.sceneGraphics.fillRoundedRect(position.x, position.y, buttonWidth, buttonHeight);
 
       const text = this.add.text(
         position.x + (buttonWidth / 2),
@@ -216,19 +215,14 @@ export default class Game extends Phaser.Scene {
           `Price: ${ business.price.toString()}`,
           businessFont
         ),
-        progress: this.graphics.fillRect(
-          business.positionX + statsOffsetX,
-          business.positionY - statsOffsetY,
-          progressBarWidth,
-          progressBarHeight,
-         )
+        progress: this.add.graphics()
       };
 
-      this.graphics.lineStyle(borderWidth, progressBarBorderColor, progressBarBorderAlpha);
-      this.graphics.strokeRect(
+      this.sceneGraphics.lineStyle(borderWidth, progressBarBorderColor, progressBarBorderAlpha);
+      this.sceneGraphics.strokeRect(
         business.positionX + statsOffsetX,
         business.positionY - statsOffsetY,
-        progressBarWidth + 1,
+        progressBarWidth,
         progressBarHeight + 1,
       );
 

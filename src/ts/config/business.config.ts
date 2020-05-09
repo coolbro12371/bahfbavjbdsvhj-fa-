@@ -38,7 +38,7 @@ export const BUSINESS_INFO: BusinessInfo[] = [
     name: 'Pawn Shop',
     price: 500,
     profit: 450,
-    interval: 10000,
+    interval: 5000,
     logo: 'pawn-shop'
   },
   {

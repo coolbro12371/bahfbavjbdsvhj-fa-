@@ -49,6 +49,7 @@ export const BUSINESSES_GUI = {
   progressBarHeight: 20,
   progressBarWidth: 200,
   progressBarBorderColor: 0x000000,
+  progressBarFillColor: 0x0f0a55,
   progressBarBorderAlpha: 1,
   operationOffsetX: 60,
   operationOffsetY: 35,
