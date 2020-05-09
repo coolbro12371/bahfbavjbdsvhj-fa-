@@ -22,8 +22,8 @@ export const SIDEMENU_GUI = {
 };
 
 export const BUSINESSES_GUI = {
-  businessesGap: 200,
-  leftSideBusinessX: 300,
+  businessesGap: 250,
+  leftSideBusinessX: 350,
   rightSideBusinessX: 830,
   firstRowBusinessY: 80,
   businessTitleFont: {
@@ -49,4 +49,7 @@ export const BUSINESSES_GUI = {
   progressBarWidth: 200,
   progressBarBorderColor: 0x000000,
   progressBarBorderAlpha: 1,
+  operationOffsetX: 60,
+  operationOffsetY: 35,
+  operationLogoSize: 24
 };

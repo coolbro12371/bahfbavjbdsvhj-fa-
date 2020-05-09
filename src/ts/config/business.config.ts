@@ -15,7 +15,7 @@ export interface BusinessInfo {
   logo: string;
 }
 
-export interface BusinessOption {
+export interface BusinessOperation {
   operationName: string;
   logo: string;
 }
@@ -78,7 +78,7 @@ export const BUSINESS_INFO: BusinessInfo[] = [
  * Currently operationName must match the BusinessOperation interface props
  * Check improvements on README.md
  */
-export const BUSINESS_OPTIONS: BusinessOption[] = [
+export const BUSINESS_OPERATIONS: BusinessOperation[] = [
   {
     operationName: 'buy',
     logo: 'buy'

@@ -2,7 +2,7 @@ import * as logger from 'js-logger';
 
 import { canvasColor } from '../config/game.config';
 import { BUSINESSES_GUI, SIDEMENU_GUI } from '../config/gui.config';
-import { BUSINESS_INFO, BUSINESS_OPTIONS, BusinessOption, STARTING_MONEY } from '../config/business.config';
+import { BUSINESS_INFO, BUSINESS_OPERATIONS, BusinessOperation, STARTING_MONEY } from '../config/business.config';
 
 import { BaseBusiness } from '../classes/BaseBusiness';
 
@@ -42,6 +42,9 @@ const {
   progressBarWidth,
   progressBarBorderColor,
   progressBarBorderAlpha,
+  operationOffsetX,
+  operationOffsetY,
+  operationLogoSize
 } = BUSINESSES_GUI;
 
 export default class Game extends Phaser.Scene {
@@ -167,15 +170,18 @@ export default class Game extends Phaser.Scene {
   }
 
   private createBusinessOptions(): void {
-    // this.businesses.forEach((business: BaseBusiness) => {
-    //   BUSINESS_OPTIONS.forEach((businessOption: BusinessOption) => {
-    //     const upgrade = this.add.image(
-    //       business.positionX,
-    //       business.positionY,
-    //       business.logo
-    //     )
-    //   });
-    // };
+    this.businesses.forEach((business: BaseBusiness) => {
+      BUSINESS_OPERATIONS.forEach((businessOperation: BusinessOperation, index: number) => {
+        const operation = this.add.image(
+          business.positionX - operationOffsetX,
+          business.positionY - logoSize / 2 + operationOffsetY * index,
+          businessOperation.logo
+        );
+
+        operation.displayHeight = operationLogoSize;
+        operation.scaleX = operation.scaleY;
+      });
+    });
   }
 
   private createBusinessStats(): void {
