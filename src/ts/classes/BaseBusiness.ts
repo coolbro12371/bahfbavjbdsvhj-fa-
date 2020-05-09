@@ -15,6 +15,17 @@ interface GraphicStats {
   progress: Phaser.GameObjects.Graphics;
 }
 
+const {
+  leftSideBusinessX,
+  rightSideBusinessX,
+  firstRowBusinessY,
+  statsOffsetX,
+  statsOffsetY,
+  progressBarHeight,
+  progressBarWidth,
+  businessesGap
+} = BUSINESSES_GUI;
+
 export class BaseBusiness implements BusinessOperations {
   protected _logo: Phaser.GameObjects.Image;
   protected _positionX: number;
@@ -135,12 +146,12 @@ export class BaseBusiness implements BusinessOperations {
   private calculateUIPosition(): void {
     const businessColumnSize = BUSINESS_INFO.length / 2;
     this._positionX = this.businessValueFactor < businessColumnSize ?
-      BUSINESSES_GUI.leftSideBusinessX :
-      BUSINESSES_GUI.rightSideBusinessX;
+      leftSideBusinessX :
+      rightSideBusinessX;
 
     this._positionY = this.businessValueFactor < businessColumnSize ?
-      (this.businessValueFactor) * BUSINESSES_GUI.businessesGap + BUSINESSES_GUI.firstRowBusinessY :
-      (this.businessValueFactor % businessColumnSize ) * BUSINESSES_GUI.businessesGap + BUSINESSES_GUI.firstRowBusinessY;
+      (this.businessValueFactor) * businessesGap + firstRowBusinessY :
+      (this.businessValueFactor % businessColumnSize ) * businessesGap + firstRowBusinessY;
   }
 
   private calculateProgress(): void {
@@ -149,10 +160,10 @@ export class BaseBusiness implements BusinessOperations {
 
     this._graphicStats.progress.clear();
     this._graphicStats.progress.fillRect(
-      this.positionX + BUSINESSES_GUI.statsOffsetX,
-      this.positionY - BUSINESSES_GUI.statsOffsetY,
-      BUSINESSES_GUI.progressBarWidth * progressFraction,
-      BUSINESSES_GUI.progressBarHeight
+      this.positionX + statsOffsetX,
+      this.positionY - statsOffsetY,
+      progressBarWidth * progressFraction,
+      progressBarHeight
     );
   }
 }
