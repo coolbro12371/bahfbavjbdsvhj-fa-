@@ -63,6 +63,8 @@ export default class Game extends Phaser.Scene {
     'Stock market',
   ];
 
+  private totalMoneyListener: Phaser.Events.EventEmitter;
+
   create(): void {
     logger.info('Game enter');
 
@@ -71,6 +73,7 @@ export default class Game extends Phaser.Scene {
     this.setBackground();
     this.setSideMenu();
     this.createMoneyIndicator();
+    this.initTotalMoneyListener();
     this.createBusinesses();
     this.createBusinessLogos();
     this.createBusinessOperations();
@@ -78,11 +81,13 @@ export default class Game extends Phaser.Scene {
   }
 
   update() {
-    this.businesses.forEach((business: BaseBusiness) => business.update(this.totalMoney));
-
     if (this.totalMoney) {
       this.totalMoneyIndicator.text = this.totalMoney.toFixed(2);
     }
+
+    this.businesses.forEach(async (business: BaseBusiness) => {
+      business.update(this.totalMoney);
+    });
   }
 
   private setBackground(): void {
@@ -148,8 +153,10 @@ export default class Game extends Phaser.Scene {
         business.price,
         business.profit,
         business.interval,
+        business.managerPrice,
         this.add.image( 0, 0, business.logo),
-        index
+        index,
+        this.totalMoneyListener
       ));
     });
   }
@@ -162,7 +169,7 @@ export default class Game extends Phaser.Scene {
       business.logo.setInteractive();
       business.logo.on(
         'pointerup',
-        async () => this.totalMoney = await business.produce()
+        async () => business.produce()
       );
 
       business.logo.displayHeight = logoSize;
@@ -183,7 +190,7 @@ export default class Game extends Phaser.Scene {
         operation.on(
           'pointerup',
           // @ts-ignore
-          () => this.totalMoney = business[businessOperation.operationName](this.totalMoney)
+          () => business[businessOperation.operationName]()
         );
 
         operation.displayHeight = operationLogoSize;
@@ -231,6 +238,14 @@ export default class Game extends Phaser.Scene {
       );
 
       business.graphicStats = stats;
+    });
+  }
+
+  private initTotalMoneyListener(): void {
+    this.totalMoneyListener = new Phaser.Events.EventEmitter();
+
+    this.totalMoneyListener.addListener('totalMoneyUpdated', (value: any) => {
+      this.totalMoney = value;
     });
   }
 }

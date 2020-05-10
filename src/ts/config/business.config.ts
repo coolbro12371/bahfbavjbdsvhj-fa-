@@ -12,6 +12,7 @@ export interface BusinessInfo {
   price: number;
   profit: number;
   interval: number;
+  managerPrice: number;
   logo: string;
 }
 
@@ -31,6 +32,7 @@ export const BUSINESS_INFO: BusinessInfo[] = [
     price: 100,
     profit: 85,
     interval: 1000,
+    managerPrice: 500,
     logo: 'convenience-store'
   },
   {
@@ -39,6 +41,7 @@ export const BUSINESS_INFO: BusinessInfo[] = [
     price: 500,
     profit: 450,
     interval: 5000,
+    managerPrice: 2000,
     logo: 'pawn-shop'
   },
   {
@@ -47,6 +50,7 @@ export const BUSINESS_INFO: BusinessInfo[] = [
     price: 2000,
     profit: 1700,
     interval: 30000,
+    managerPrice: 5000,
     logo: 'car-dealership'
   },
   {
@@ -55,6 +59,7 @@ export const BUSINESS_INFO: BusinessInfo[] = [
     price: 50000,
     profit: 45000,
     interval: 60000,
+    managerPrice: 10000,
     logo: 'construction'
   },
   {
@@ -63,6 +68,7 @@ export const BUSINESS_INFO: BusinessInfo[] = [
     price: 1000000,
     profit: 800000,
     interval: 120000,
+    managerPrice: 2000000,
     logo: 'tech'
   },
   {
@@ -71,6 +77,7 @@ export const BUSINESS_INFO: BusinessInfo[] = [
     price: 50000000,
     profit: 40000000,
     interval: 12000,
+    managerPrice: 100000000,
     logo: 'wayne-enterprises'
   },
 ];
@@ -82,7 +89,7 @@ export const BUSINESS_INFO: BusinessInfo[] = [
  */
 export const BUSINESS_OPERATIONS: BusinessOperation[] = [
   {
-    operationName: 'buy',
+    operationName: 'acquire',
     logo: 'buy'
   },
   {

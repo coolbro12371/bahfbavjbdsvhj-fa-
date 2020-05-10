@@ -31,12 +31,14 @@ export class BaseBusiness implements BusinessOperations {
   protected _interval: number;
   protected _numberOfBranches: number;
   protected businessValueFactor: number;
-
-  protected acquired = false;
-  protected running = false;
   protected startTime: number;
   protected endTime: number;
   protected totalMoney: number;
+  protected acquired: boolean;
+  protected running: boolean;
+  protected managerHired: boolean;
+  protected managerPrice: number;
+  protected totalMoneyEmitter: Phaser.Events.EventEmitter;
 
   get positionX(): number {
     return this._positionX;
@@ -79,8 +81,10 @@ export class BaseBusiness implements BusinessOperations {
     price: number,
     profit: number,
     interval: number,
+    managerPrice: number,
     logo: Phaser.GameObjects.Image,
-    businessValueFactor: number
+    businessValueFactor: number,
+    totalMoneyEmitter: Phaser.Events.EventEmitter
   ) {
     this._name = name;
     this._logo = logo;
@@ -89,7 +93,12 @@ export class BaseBusiness implements BusinessOperations {
     this._interval = interval;
     this._numberOfBranches = 0;
     this.businessValueFactor = businessValueFactor;
+    this.managerPrice = managerPrice;
+    this.acquired = false;
+    this.running = false;
+    this.managerHired = false;
     this.calculateUIPosition();
+    this.totalMoneyEmitter = totalMoneyEmitter;
   }
 
   update(totalMoney: number): void {
@@ -102,9 +111,13 @@ export class BaseBusiness implements BusinessOperations {
     }
 
     this.updateGraphicStats();
+
+    if (this.managerHired) {
+      this.produce();
+    }
   }
 
-  buy(): number {
+  acquire(): void {
     if (this.totalMoney >= this.price) {
       const remainingMoney = this.totalMoney - this._price;
 
@@ -112,10 +125,10 @@ export class BaseBusiness implements BusinessOperations {
       this._price = Math.round(this._price * ACQUIRING_MULTIPLIER * 100) / 100;
       this.acquired = true;
 
-      return remainingMoney;
+      this.emitTotalMoney(remainingMoney);
+    } else  {
+      this.emitTotalMoney(this.totalMoney);
     }
-
-    return this.totalMoney;
   }
 
   upgrade(): number {
@@ -124,13 +137,18 @@ export class BaseBusiness implements BusinessOperations {
     return 0;
   }
 
-  hireManager(): number {
-    console.log('hireManager' + this.name);
+  hireManager(): void {
+    if (
+      this.totalMoney < this.managerPrice ||
+      this.managerHired
+    ) { return; }
 
-    return 0;
+    this.managerHired = true;
+
+    this.emitTotalMoney(this.totalMoney - this.managerPrice);
   }
 
-  async produce(): Promise<number> {
+  produce(): number {
     if (!this.acquired) { return; }
 
     if (this.running) { return; }
@@ -139,15 +157,13 @@ export class BaseBusiness implements BusinessOperations {
     this.startTime = new Date().getTime();
     this.endTime = this.startTime + this._interval;
 
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        this.running = false;
-        this.startTime = 0;
-        this.endTime = 0;
+    setTimeout(() => {
+      this.running = false;
+      this.startTime = 0;
+      this.endTime = 0;
 
-        resolve(this.totalMoney + this._profit * this._numberOfBranches);
-      }, this._interval);
-    });
+      this.emitTotalMoney(this.totalMoney + this._profit * this._numberOfBranches);
+    }, this._interval);
   }
 
   private calculateUIPosition(): void {
@@ -180,5 +196,9 @@ export class BaseBusiness implements BusinessOperations {
     this._graphicStats.price.text = `Price: ${this._price}`;
     this._graphicStats.numberOfBranches.text = `No of branches: ${this._numberOfBranches}`;
     this._graphicStats.profit.text = `Profit: ${this._profit * this._numberOfBranches}`;
+  }
+
+  private emitTotalMoney(money: number): void {
+    this.totalMoneyEmitter.emit('totalMoneyUpdated', money);
   }
 }
