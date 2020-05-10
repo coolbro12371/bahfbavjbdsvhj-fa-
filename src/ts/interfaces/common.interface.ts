@@ -5,3 +5,21 @@ export interface GraphicStats {
   price: Phaser.GameObjects.Text;
   progress: Phaser.GameObjects.Graphics;
 }
+
+export interface BusinessState {
+  name: string;
+  price: number;
+  profit: number;
+  numberOfBranches: number;
+  running: boolean;
+  managerHired: boolean;
+  upgradePrice: number;
+  acquired: boolean;
+  startTime: number;
+  endTime: number;
+}
+
+export interface GameState {
+  totalMoney: number;
+  businesses: BusinessState[];
+}

@@ -128,9 +128,8 @@ export default <webpack.Configuration>{
     new HtmlWebpackPlugin({
       template: './src/ejs/index.ejs',
       templateParameters: {
-        title: gameConfig.title,
-        description: gameConfig.description,
-        analyticsId: prod ? gameConfig.analyticsId : null
+        title: gameConfig.TITLE,
+        description: gameConfig.DESCRIPTION
       },
       minify: prod ? {
         removeComments: true,

@@ -31,16 +31,16 @@ export class BaseBusiness implements BusinessOperations {
   protected _profit: number;
   protected _interval: number;
   protected _numberOfBranches: number;
+  protected _managerHired: boolean;
+  protected _running: boolean;
+  protected _upgradePrice: number;
+  protected _startTime: number;
+  protected _endTime: number;
+  protected _acquired: boolean;
 
   protected businessValueFactor: number;
-  protected startTime: number;
-  protected endTime: number;
   protected totalMoney: number;
-  protected acquired: boolean;
-  protected running: boolean;
-  protected managerHired: boolean;
   protected managerPrice: number;
-  protected upgradePrice: number;
 
   protected totalMoneyEmitter: Phaser.Events.EventEmitter;
 
@@ -60,20 +60,80 @@ export class BaseBusiness implements BusinessOperations {
     return this._name;
   }
 
+  get interval(): number {
+    return this._interval;
+  }
+
   get price(): number {
     return this._price;
+  }
+
+  set price(price: number) {
+    this._price = price;
   }
 
   get profit(): number {
     return this._profit;
   }
 
-  get interval(): number {
-    return this._interval;
+  set profit(profit: number) {
+    this._profit = profit;
+  }
+
+  get upgradePrice(): number {
+    return this._upgradePrice;
+  }
+
+  set upgradePrice(upgradePrice: number) {
+    this._upgradePrice = upgradePrice;
   }
 
   get numberOfBranches(): number {
     return this._numberOfBranches;
+  }
+
+  set numberOfBranches(numberOfBranches: number) {
+    this._numberOfBranches = numberOfBranches;
+  }
+
+  get managerHired(): boolean {
+    return this._managerHired;
+  }
+
+  set managerHired(managerHired: boolean) {
+    this._managerHired = managerHired;
+  }
+
+  get running(): boolean {
+    return this._running;
+  }
+
+  set running(running: boolean) {
+    this._running = running;
+  }
+
+  get acquired(): boolean {
+    return this._acquired;
+  }
+
+  set acquired(acquired: boolean) {
+    this._acquired = acquired;
+  }
+
+  get startTime(): number {
+    return this._startTime;
+  }
+
+  set startTime(startTime: number) {
+    this._startTime = startTime;
+  }
+
+  get endTime(): number {
+    return this._endTime;
+  }
+
+  set endTime(endTime: number) {
+    this._endTime = endTime;
   }
 
   set graphicStats(stats: GraphicStats) {
@@ -97,12 +157,12 @@ export class BaseBusiness implements BusinessOperations {
     this._profit = profit;
     this._interval = interval;
     this._numberOfBranches = 0;
+    this._managerHired = false;
+    this._running = false;
+    this._upgradePrice = upgradePrice;
+    this._acquired = false;
     this.businessValueFactor = businessValueFactor;
     this.managerPrice = managerPrice;
-    this.upgradePrice = upgradePrice;
-    this.acquired = false;
-    this.running = false;
-    this.managerHired = false;
     this.totalMoneyEmitter = totalMoneyEmitter;
 
     this.calculateUIPosition();
@@ -111,7 +171,7 @@ export class BaseBusiness implements BusinessOperations {
   update(totalMoney: number): void {
     this.totalMoney = totalMoney;
 
-    if (this.running) {
+    if (this._running) {
       this.calculateProgress();
     } else {
       this._graphicStats.progress.clear();
@@ -119,7 +179,7 @@ export class BaseBusiness implements BusinessOperations {
 
     this.updateGraphicStats();
 
-    if (this.managerHired) {
+    if (this._managerHired) {
       this.produce();
     }
   }
@@ -131,17 +191,17 @@ export class BaseBusiness implements BusinessOperations {
 
     this._numberOfBranches += 1;
     this._price = Math.round(this._price * ACQUIRING_MULTIPLIER * 100) / 100;
-    this.acquired = true;
+    this._acquired = true;
 
     this.emitTotalMoney(remainingMoney);
   }
 
   upgrade(): void {
-    if (this.totalMoney < this.upgradePrice) { return; }
+    if (this.totalMoney < this._upgradePrice) { return; }
 
-    const remainingMoney = this.totalMoney - this.upgradePrice;
+    const remainingMoney = this.totalMoney - this._upgradePrice;
 
-    this.upgradePrice = Math.round(this.upgradePrice * UPGRADE_PRICE_MULTIPLIER * 100) / 100;
+    this._upgradePrice = Math.round(this._upgradePrice * UPGRADE_PRICE_MULTIPLIER * 100) / 100;
     this._profit = Math.round(this._profit * UPGRADE_PROFIT_MULTIPLIER * 100) / 100;
 
     this.emitTotalMoney(remainingMoney);
@@ -150,27 +210,27 @@ export class BaseBusiness implements BusinessOperations {
   hireManager(): void {
     if (
       this.totalMoney < this.managerPrice ||
-      this.managerHired
+      this._managerHired
     ) { return; }
 
-    this.managerHired = true;
+    this._managerHired = true;
 
     this.emitTotalMoney(this.totalMoney - this.managerPrice);
   }
 
   produce(): number {
-    if (!this.acquired) { return; }
+    if (!this._acquired) { return; }
 
-    if (this.running) { return; }
+    if (this._running) { return; }
 
-    this.running = true;
-    this.startTime = new Date().getTime();
-    this.endTime = this.startTime + this._interval;
+    this._running = true;
+    this._startTime = new Date().getTime();
+    this._endTime = this._startTime + this._interval;
 
     setTimeout(() => {
-      this.running = false;
-      this.startTime = 0;
-      this.endTime = 0;
+      this._running = false;
+      this._startTime = 0;
+      this._endTime = 0;
 
       this.emitTotalMoney(this.totalMoney + this._profit * this._numberOfBranches);
     }, this._interval);
@@ -188,8 +248,17 @@ export class BaseBusiness implements BusinessOperations {
   }
 
   private calculateProgress(): void {
-    const currentTime = this.endTime - new Date().getTime();
-    const progressFraction = (this.interval - currentTime) / this.interval;
+    let currentProgress;
+    const timeDifference = this._endTime - new Date().getTime();
+
+    if (timeDifference < 0) {
+      currentProgress = (new Date().getTime() - this._endTime) % this._interval;
+      this._endTime = new Date().getTime() + (this._interval - currentProgress);
+    } else {
+      currentProgress = timeDifference;
+    }
+
+    const progressFraction = (this.interval - currentProgress) / this.interval;
 
     this._graphicStats.progress.clear();
     this._graphicStats.progress.fillRect(

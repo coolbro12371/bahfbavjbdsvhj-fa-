@@ -19,7 +19,7 @@ import Game from './scenes/game';
  * Setup logger
  */
 logger.useDefaults();
-logger.setLevel(gameConfig.logLevel);
+logger.setLevel(gameConfig.LOG_LEVEL);
 
 /**
  * Phaser game config
@@ -28,8 +28,8 @@ logger.setLevel(gameConfig.logLevel);
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   parent: 'container',     // parent id - '' means  no container
-  width: gameConfig.size.x,
-  height: gameConfig.size.y
+  width: gameConfig.SIZE.x,
+  height: gameConfig.SIZE.y
 };
 
 /**
@@ -39,7 +39,7 @@ const config: Phaser.Types.Core.GameConfig = {
  */
 let game: Phaser.Game;
 
-if (gameConfig.stats && process.env.NODE_ENV !== 'production') {
+if (gameConfig.STATS && process.env.NODE_ENV !== 'production') {
   game = new PhaserStatsGame(config);
 } else {
   game = new Phaser.Game(config);

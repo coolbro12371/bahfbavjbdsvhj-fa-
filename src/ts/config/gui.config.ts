@@ -1,4 +1,4 @@
-import { size } from './game.config';
+import { SIZE } from './game.config';
 
 export const SIDEMENU_GUI = {
   buttonWidth: 150,
@@ -17,7 +17,7 @@ export const SIDEMENU_GUI = {
   menuBgAlpha: 0.5,
   menuX: 0,
   menuY: 0,
-  menuHeight: size.y,
+  menuHeight: SIZE.y,
   menuWidth: 200,
 };
 

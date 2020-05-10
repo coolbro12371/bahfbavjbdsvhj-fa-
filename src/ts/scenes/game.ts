@@ -1,6 +1,6 @@
 import * as logger from 'js-logger';
 
-import { canvasColor } from '../config/game.config';
+import { CANVAS_COLOR, IDLE_BACKUP_INTERVAL } from '../config/game.config';
 import { BUSINESSES_GUI, SIDEMENU_GUI } from '../config/gui.config';
 import {
   BUSINESS_INFO,
@@ -10,8 +10,8 @@ import {
 } from '../config/business.config';
 
 import { BaseBusiness } from '../classes/BaseBusiness';
-
-import { GraphicStats } from '../interfaces/common.interface';
+import { BusinessState, GameState, GraphicStats } from '../interfaces/common.interface';
+import { StorageService } from '../services/storage.service';
 
 const {
   buttonWidth,
@@ -70,19 +70,24 @@ export default class Game extends Phaser.Scene {
 
   private totalMoneyListener: Phaser.Events.EventEmitter;
 
-  create(): void {
+  create(gameData: any): void {
     logger.info('Game enter');
 
+    const { gameState: { totalMoney, businesses }} = gameData;
+
+    this.totalMoney = totalMoney;
     this.sceneGraphics = this.add.graphics();
 
     this.setBackground();
     this.setSideMenu();
     this.createMoneyIndicator();
     this.initTotalMoneyListener();
-    this.createBusinesses();
+    this.createDefaultBusinesses();
+    this.restoreBusinesses(businesses);
     this.createBusinessLogos();
     this.createBusinessOperations();
     this.createBusinessStats();
+    this.setIdleGameBackup();
   }
 
   update() {
@@ -96,7 +101,7 @@ export default class Game extends Phaser.Scene {
   }
 
   private setBackground(): void {
-    this.cameras.main.setBackgroundColor(canvasColor);
+    this.cameras.main.setBackgroundColor(CANVAS_COLOR);
 
     this.background = this.add.image(
       (this.sys.game.config.width as number) / 2,
@@ -151,7 +156,7 @@ export default class Game extends Phaser.Scene {
     );
   }
 
-  private createBusinesses(): void {
+  private createDefaultBusinesses(): void {
     BUSINESS_INFO.forEach((business, index: number) => {
       this.businesses.push(new business.model(
         business.name,
@@ -164,6 +169,34 @@ export default class Game extends Phaser.Scene {
         index,
         this.totalMoneyListener
       ));
+    });
+  }
+
+  private restoreBusinesses(backedUpBusinesses: BusinessState[]): void {
+    if (!backedUpBusinesses) { return; }
+
+    this.businesses.forEach((defaultBusiness: BaseBusiness, index: number) => {
+      const {
+        price,
+        profit,
+        numberOfBranches,
+        running,
+        managerHired,
+        upgradePrice,
+        acquired,
+        startTime,
+        endTime
+      } = backedUpBusinesses[index];
+
+      defaultBusiness.price = price;
+      defaultBusiness.profit = profit;
+      defaultBusiness.upgradePrice = upgradePrice;
+      defaultBusiness.numberOfBranches = numberOfBranches;
+      defaultBusiness.running = running;
+      defaultBusiness.managerHired = managerHired;
+      defaultBusiness.acquired = acquired;
+      defaultBusiness.startTime = startTime;
+      defaultBusiness.endTime = endTime;
     });
   }
 
@@ -253,5 +286,12 @@ export default class Game extends Phaser.Scene {
     this.totalMoneyListener.addListener('totalMoneyUpdated', (value: any) => {
       this.totalMoney = value;
     });
+  }
+
+  private setIdleGameBackup(): void {
+    setInterval(
+      () => StorageService.backupGameState(this.businesses, this.totalMoney),
+      IDLE_BACKUP_INTERVAL
+    );
   }
 }
