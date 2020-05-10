@@ -13,7 +13,6 @@ export class StorageService {
           price: business.price,
           profit: business.profit,
           numberOfBranches: business.numberOfBranches,
-          running: business.running,
           managerHired: business.managerHired,
           upgradePrice: business.upgradePrice,
           acquired: business.acquired,

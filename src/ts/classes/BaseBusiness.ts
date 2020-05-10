@@ -171,17 +171,17 @@ export class BaseBusiness implements BusinessOperations {
   update(totalMoney: number): void {
     this.totalMoney = totalMoney;
 
+    if (this._managerHired) {
+      this.produce(this.calculateProgress());
+    }
+
     if (this._running) {
-      this.calculateProgress();
+      this.displayProgress(this.calculateProgress());
     } else {
       this._graphicStats.progress.clear();
     }
 
     this.updateGraphicStats();
-
-    if (this._managerHired) {
-      this.produce();
-    }
   }
 
   acquire(): void {
@@ -218,7 +218,7 @@ export class BaseBusiness implements BusinessOperations {
     this.emitTotalMoney(this.totalMoney - this.managerPrice);
   }
 
-  produce(): number {
+  produce(progressFraction: number): void {
     if (!this._acquired) { return; }
 
     if (this._running) { return; }
@@ -233,7 +233,7 @@ export class BaseBusiness implements BusinessOperations {
       this._endTime = 0;
 
       this.emitTotalMoney(this.totalMoney + this._profit * this._numberOfBranches);
-    }, this._interval);
+    }, this._interval * progressFraction);
   }
 
   private calculateUIPosition(): void {
@@ -247,7 +247,7 @@ export class BaseBusiness implements BusinessOperations {
       (this.businessValueFactor % businessColumnSize ) * businessesGap + firstRowBusinessY;
   }
 
-  private calculateProgress(): void {
+  private calculateProgress(): number {
     let currentProgress;
     const timeDifference = this._endTime - new Date().getTime();
 
@@ -258,8 +258,10 @@ export class BaseBusiness implements BusinessOperations {
       currentProgress = timeDifference;
     }
 
-    const progressFraction = (this.interval - currentProgress) / this.interval;
+    return (this.interval - currentProgress) / this.interval;
+  }
 
+  private displayProgress(progressFraction: number): void {
     this._graphicStats.progress.clear();
     this._graphicStats.progress.fillRect(
       this.positionX + statsOffsetX,

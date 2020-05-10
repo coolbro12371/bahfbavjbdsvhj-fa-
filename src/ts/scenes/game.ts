@@ -73,7 +73,7 @@ export default class Game extends Phaser.Scene {
   create(gameData: any): void {
     logger.info('Game enter');
 
-    const { gameState: { totalMoney, businesses }} = gameData;
+    const { totalMoney, businesses } = this.retrieveGameState(gameData);
 
     this.totalMoney = totalMoney;
     this.sceneGraphics = this.add.graphics();
@@ -98,6 +98,14 @@ export default class Game extends Phaser.Scene {
     this.businesses.forEach(async (business: BaseBusiness) => {
       business.update(this.totalMoney);
     });
+  }
+
+  private retrieveGameState({ gameState }: any): { totalMoney: number, businesses: BusinessState[] } {
+    if (gameState && gameState.totalMoney && gameState.businesses) {
+      return { totalMoney: gameState.totalMoney, businesses: gameState.businesses };
+    } else {
+      return { totalMoney: STARTING_MONEY, businesses: [] };
+    }
   }
 
   private setBackground(): void {
@@ -173,14 +181,13 @@ export default class Game extends Phaser.Scene {
   }
 
   private restoreBusinesses(backedUpBusinesses: BusinessState[]): void {
-    if (!backedUpBusinesses) { return; }
+    if (!backedUpBusinesses || !backedUpBusinesses.length) { return; }
 
     this.businesses.forEach((defaultBusiness: BaseBusiness, index: number) => {
       const {
         price,
         profit,
         numberOfBranches,
-        running,
         managerHired,
         upgradePrice,
         acquired,
@@ -192,7 +199,6 @@ export default class Game extends Phaser.Scene {
       defaultBusiness.profit = profit;
       defaultBusiness.upgradePrice = upgradePrice;
       defaultBusiness.numberOfBranches = numberOfBranches;
-      defaultBusiness.running = running;
       defaultBusiness.managerHired = managerHired;
       defaultBusiness.acquired = acquired;
       defaultBusiness.startTime = startTime;
@@ -208,7 +214,7 @@ export default class Game extends Phaser.Scene {
       business.logo.setInteractive();
       business.logo.on(
         'pointerup',
-        async () => business.produce()
+        async () => business.produce(1)
       );
 
       business.logo.displayHeight = logoSize;
