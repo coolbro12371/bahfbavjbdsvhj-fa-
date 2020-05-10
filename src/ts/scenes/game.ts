@@ -2,7 +2,12 @@ import * as logger from 'js-logger';
 
 import { canvasColor } from '../config/game.config';
 import { BUSINESSES_GUI, SIDEMENU_GUI } from '../config/gui.config';
-import { BUSINESS_INFO, BUSINESS_OPERATIONS, BusinessOperation, STARTING_MONEY } from '../config/business.config';
+import {
+  BUSINESS_INFO,
+  BUSINESS_OPERATIONS,
+  BusinessOperation,
+  STARTING_MONEY
+} from '../config/business.config';
 
 import { BaseBusiness } from '../classes/BaseBusiness';
 
@@ -154,6 +159,7 @@ export default class Game extends Phaser.Scene {
         business.profit,
         business.interval,
         business.managerPrice,
+        business.upgradePrice,
         this.add.image( 0, 0, business.logo),
         index,
         this.totalMoneyListener

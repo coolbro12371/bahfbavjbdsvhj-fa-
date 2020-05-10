@@ -1,7 +1,8 @@
 import { BUSINESSES_GUI } from '../config/gui.config';
 import {
   BUSINESS_INFO,
-  UPGRADE_MULTIPLIER,
+  UPGRADE_PROFIT_MULTIPLIER,
+  UPGRADE_PRICE_MULTIPLIER,
   ACQUIRING_MULTIPLIER
 } from '../config/business.config';
 
@@ -30,6 +31,7 @@ export class BaseBusiness implements BusinessOperations {
   protected _profit: number;
   protected _interval: number;
   protected _numberOfBranches: number;
+
   protected businessValueFactor: number;
   protected startTime: number;
   protected endTime: number;
@@ -38,6 +40,8 @@ export class BaseBusiness implements BusinessOperations {
   protected running: boolean;
   protected managerHired: boolean;
   protected managerPrice: number;
+  protected upgradePrice: number;
+
   protected totalMoneyEmitter: Phaser.Events.EventEmitter;
 
   get positionX(): number {
@@ -82,6 +86,7 @@ export class BaseBusiness implements BusinessOperations {
     profit: number,
     interval: number,
     managerPrice: number,
+    upgradePrice: number,
     logo: Phaser.GameObjects.Image,
     businessValueFactor: number,
     totalMoneyEmitter: Phaser.Events.EventEmitter
@@ -94,11 +99,13 @@ export class BaseBusiness implements BusinessOperations {
     this._numberOfBranches = 0;
     this.businessValueFactor = businessValueFactor;
     this.managerPrice = managerPrice;
+    this.upgradePrice = upgradePrice;
     this.acquired = false;
     this.running = false;
     this.managerHired = false;
-    this.calculateUIPosition();
     this.totalMoneyEmitter = totalMoneyEmitter;
+
+    this.calculateUIPosition();
   }
 
   update(totalMoney: number): void {
@@ -118,23 +125,26 @@ export class BaseBusiness implements BusinessOperations {
   }
 
   acquire(): void {
-    if (this.totalMoney >= this.price) {
-      const remainingMoney = this.totalMoney - this._price;
+    if (this.totalMoney < this.price) { return; }
 
-      this._numberOfBranches += 1;
-      this._price = Math.round(this._price * ACQUIRING_MULTIPLIER * 100) / 100;
-      this.acquired = true;
+    const remainingMoney = this.totalMoney - this._price;
 
-      this.emitTotalMoney(remainingMoney);
-    } else  {
-      this.emitTotalMoney(this.totalMoney);
-    }
+    this._numberOfBranches += 1;
+    this._price = Math.round(this._price * ACQUIRING_MULTIPLIER * 100) / 100;
+    this.acquired = true;
+
+    this.emitTotalMoney(remainingMoney);
   }
 
-  upgrade(): number {
-    console.log('upgrade' + this.name);
+  upgrade(): void {
+    if (this.totalMoney < this.upgradePrice) { return; }
 
-    return 0;
+    const remainingMoney = this.totalMoney - this.upgradePrice;
+
+    this.upgradePrice = Math.round(this.upgradePrice * UPGRADE_PRICE_MULTIPLIER * 100) / 100;
+    this._profit = Math.round(this._profit * UPGRADE_PROFIT_MULTIPLIER * 100) / 100;
+
+    this.emitTotalMoney(remainingMoney);
   }
 
   hireManager(): void {

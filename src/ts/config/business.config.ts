@@ -13,6 +13,7 @@ export interface BusinessInfo {
   profit: number;
   interval: number;
   managerPrice: number;
+  upgradePrice: number;
   logo: string;
 }
 
@@ -22,7 +23,8 @@ export interface BusinessOperation {
 }
 
 export const STARTING_MONEY = 400 ;
-export const UPGRADE_MULTIPLIER = 1.25;
+export const UPGRADE_PROFIT_MULTIPLIER = 1.25;
+export const UPGRADE_PRICE_MULTIPLIER = 1.5;
 export const ACQUIRING_MULTIPLIER = 1.25;
 
 export const BUSINESS_INFO: BusinessInfo[] = [
@@ -33,6 +35,7 @@ export const BUSINESS_INFO: BusinessInfo[] = [
     profit: 85,
     interval: 1000,
     managerPrice: 500,
+    upgradePrice: 500,
     logo: 'convenience-store'
   },
   {
@@ -42,6 +45,7 @@ export const BUSINESS_INFO: BusinessInfo[] = [
     profit: 450,
     interval: 5000,
     managerPrice: 2000,
+    upgradePrice: 2000,
     logo: 'pawn-shop'
   },
   {
@@ -51,6 +55,7 @@ export const BUSINESS_INFO: BusinessInfo[] = [
     profit: 1700,
     interval: 30000,
     managerPrice: 5000,
+    upgradePrice: 5000,
     logo: 'car-dealership'
   },
   {
@@ -60,6 +65,7 @@ export const BUSINESS_INFO: BusinessInfo[] = [
     profit: 45000,
     interval: 60000,
     managerPrice: 10000,
+    upgradePrice: 1000,
     logo: 'construction'
   },
   {
@@ -69,6 +75,7 @@ export const BUSINESS_INFO: BusinessInfo[] = [
     profit: 800000,
     interval: 120000,
     managerPrice: 2000000,
+    upgradePrice: 2000000,
     logo: 'tech'
   },
   {
@@ -78,6 +85,7 @@ export const BUSINESS_INFO: BusinessInfo[] = [
     profit: 40000000,
     interval: 12000,
     managerPrice: 100000000,
+    upgradePrice: 100000000,
     logo: 'wayne-enterprises'
   },
 ];
