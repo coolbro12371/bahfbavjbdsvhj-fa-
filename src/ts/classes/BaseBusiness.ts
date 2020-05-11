@@ -7,7 +7,7 @@ import {
 } from '../config/business.config';
 
 import { BusinessOperations } from '../interfaces/BusinessOperations.interface';
-import { GraphicStats } from '../interfaces/common.interface';
+import { GraphicOperations, GraphicStats } from '../interfaces/common.interface';
 
 const {
   leftSideBusinessX,
@@ -18,14 +18,13 @@ const {
   progressBarHeight,
   progressBarWidth,
   businessesGap,
-  logoDefaultAlpha
+  logoDefaultAlpha,
+  operationDefaultAlpha
 } = BUSINESSES_GUI;
 
 export class BaseBusiness implements BusinessOperations {
-  protected _logo: Phaser.GameObjects.Image;
   protected _positionX: number;
   protected _positionY: number;
-  protected _graphicStats: GraphicStats;
   protected _name: string;
   protected _price: number;
   protected _profit: number;
@@ -37,6 +36,10 @@ export class BaseBusiness implements BusinessOperations {
   protected _startTime: number;
   protected _endTime: number;
   protected _acquired: boolean;
+
+  protected _graphicStats: GraphicStats;
+  protected _logo: Phaser.GameObjects.Image;
+  protected _graphicOperations: GraphicOperations;
 
   protected businessValueFactor: number;
   protected totalMoney: number;
@@ -104,14 +107,6 @@ export class BaseBusiness implements BusinessOperations {
     this._managerHired = managerHired;
   }
 
-  get running(): boolean {
-    return this._running;
-  }
-
-  set running(running: boolean) {
-    this._running = running;
-  }
-
   get acquired(): boolean {
     return this._acquired;
   }
@@ -138,6 +133,10 @@ export class BaseBusiness implements BusinessOperations {
 
   set graphicStats(stats: GraphicStats) {
     this._graphicStats = stats;
+  }
+
+  set graphicOperations(graphicOperations: GraphicOperations) {
+    this._graphicOperations = graphicOperations;
   }
 
   constructor(
@@ -182,6 +181,7 @@ export class BaseBusiness implements BusinessOperations {
     }
 
     this.updateGraphicStats();
+    this.updateGraphicOperations();
   }
 
   acquire(): void {
@@ -192,6 +192,7 @@ export class BaseBusiness implements BusinessOperations {
     this._numberOfBranches += 1;
     this._price = Math.round(this._price * ACQUIRING_MULTIPLIER * 100) / 100;
     this._acquired = true;
+    this._graphicOperations.acquireActive.alpha = 1;
 
     this.emitTotalMoney(remainingMoney);
   }
@@ -203,6 +204,7 @@ export class BaseBusiness implements BusinessOperations {
 
     this._upgradePrice = Math.round(this._upgradePrice * UPGRADE_PRICE_MULTIPLIER * 100) / 100;
     this._profit = Math.round(this._profit * UPGRADE_PROFIT_MULTIPLIER * 100) / 100;
+    this._graphicOperations.upgradeActive.alpha = 1;
 
     this.emitTotalMoney(remainingMoney);
   }
@@ -214,6 +216,7 @@ export class BaseBusiness implements BusinessOperations {
     ) { return; }
 
     this._managerHired = true;
+    this._graphicOperations.hireManagerActive.alpha = 1;
 
     this.emitTotalMoney(this.totalMoney - this.managerPrice);
   }
@@ -281,5 +284,11 @@ export class BaseBusiness implements BusinessOperations {
 
   private emitTotalMoney(money: number): void {
     this.totalMoneyEmitter.emit('totalMoneyUpdated', money);
+  }
+
+  private updateGraphicOperations(): void {
+    this._graphicOperations.acquire.alpha = this.totalMoney >= this._price ? 1 : operationDefaultAlpha;
+    this._graphicOperations.upgrade.alpha = this.totalMoney >= this._upgradePrice ? 1 : operationDefaultAlpha;
+    this._graphicOperations.hireManager.alpha = this.totalMoney >= this.managerPrice ? 1 : operationDefaultAlpha;
   }
 }

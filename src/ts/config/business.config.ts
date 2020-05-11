@@ -24,8 +24,8 @@ export interface BusinessOperation {
 
 export const STARTING_MONEY = 400 ;
 export const UPGRADE_PROFIT_MULTIPLIER = 1.25;
-export const UPGRADE_PRICE_MULTIPLIER = 1.5;
-export const ACQUIRING_MULTIPLIER = 1.25;
+export const UPGRADE_PRICE_MULTIPLIER = 1.15;
+export const ACQUIRING_MULTIPLIER = 1.15;
 
 export const BUSINESS_INFO: BusinessInfo[] = [
   {
@@ -92,7 +92,10 @@ export const BUSINESS_INFO: BusinessInfo[] = [
 
 /**
  * Array of definitions for business operations
- * Currently operationName must match the BusinessOperation interface props
+ * Interfaces BusinessOperation and GraphicOperation props must match as follows:
+ *   BusinessOperation.operatioName => operationName (key)
+ *   GraphicOperation[propName] => operationName value: e.g.: acquire (key)
+ * This is to have a dynamic operation generation flow based on this config file.
  * Check improvements on README.md
  */
 export const BUSINESS_OPERATIONS: BusinessOperation[] = [

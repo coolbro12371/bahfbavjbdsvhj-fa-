@@ -6,6 +6,15 @@ export interface GraphicStats {
   progress: Phaser.GameObjects.Graphics;
 }
 
+export interface GraphicOperations {
+  acquire: Phaser.GameObjects.Image;
+  upgrade: Phaser.GameObjects.Image;
+  hireManager: Phaser.GameObjects.Image;
+  acquireActive: Phaser.GameObjects.Graphics;
+  upgradeActive: Phaser.GameObjects.Graphics;
+  hireManagerActive: Phaser.GameObjects.Graphics;
+}
+
 export interface BusinessState {
   name: string;
   price: number;

@@ -10,7 +10,7 @@ import {
 } from '../config/business.config';
 
 import { BaseBusiness } from '../classes/BaseBusiness';
-import { BusinessState, GameState, GraphicStats } from '../interfaces/common.interface';
+import { BusinessState, GameState, GraphicOperations, GraphicStats } from '../interfaces/common.interface';
 import { StorageService } from '../services/storage.service';
 
 const {
@@ -50,9 +50,14 @@ const {
   progressBarWidth,
   progressBarBorderColor,
   progressBarBorderAlpha,
+  progressBarFillColor,
   operationOffsetX,
   operationOffsetY,
-  operationLogoSize
+  operationLogoSize,
+  operationActiveOffsetX,
+  operationActiveColor,
+  operationActiveRadius,
+  operationDefaultAlpha
 } = BUSINESSES_GUI;
 
 export default class Game extends Phaser.Scene {
@@ -224,6 +229,8 @@ export default class Game extends Phaser.Scene {
 
   private createBusinessOperations(): void {
     this.businesses.forEach((business: BaseBusiness) => {
+      const graphicOperations = {};
+
       BUSINESS_OPERATIONS.forEach((businessOperation: BusinessOperation, index: number) => {
         const operation = this.add.image(
           business.positionX - operationOffsetX,
@@ -231,6 +238,7 @@ export default class Game extends Phaser.Scene {
           businessOperation.logo
         );
 
+        operation.alpha = operationDefaultAlpha;
         operation.setInteractive();
         operation.on(
           'pointerup',
@@ -240,11 +248,29 @@ export default class Game extends Phaser.Scene {
 
         operation.displayHeight = operationLogoSize;
         operation.scaleX = operation.scaleY;
+
+        // @ts-ignore
+        graphicOperations[businessOperation.operationName] = operation;
+        // @ts-ignore
+        const opGraphics = this.add.graphics();
+        const opActiveFlag = opGraphics.fillCircle(
+          business.positionX - operationOffsetX - operationActiveOffsetX,
+          business.positionY - logoSize / 2 + operationOffsetY * index,
+          operationActiveRadius
+        );
+
+        opActiveFlag.alpha = 0;
+        // @ts-ignore
+        graphicOperations[`${businessOperation.operationName}Active`] = opActiveFlag;
       });
+
+      business.graphicOperations = graphicOperations as GraphicOperations;
     });
   }
 
   private createBusinessStats(): void {
+    this.sceneGraphics.fillStyle(progressBarFillColor, 1);
+
     this.businesses.forEach((business: BaseBusiness) => {
       const stats: GraphicStats = {
         name: this.add.text(
