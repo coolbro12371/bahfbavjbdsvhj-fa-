@@ -10,7 +10,7 @@ import {
 } from '../config/business.config';
 
 import { BaseBusiness } from '../classes/BaseBusiness';
-import { BusinessState, GameState, GraphicOperations, GraphicStats } from '../interfaces/common.interface';
+import { BusinessState, GraphicOperations, GraphicStats } from '../interfaces/common.interface';
 import { StorageService } from '../services/storage.service';
 
 const {
@@ -119,10 +119,10 @@ export default class Game extends Phaser.Scene {
     this.background = this.add.image(
       (this.sys.game.config.width as number) / 2,
       (this.sys.game.config.height as number) / 2,
-      'bg'
+      'game-bg'
     );
 
-    this.background.alpha = 0.05;
+    this.background.alpha = 0.04;
   }
 
   private setSideMenu(): void {
@@ -252,7 +252,7 @@ export default class Game extends Phaser.Scene {
         // @ts-ignore
         graphicOperations[businessOperation.operationName] = operation;
         // @ts-ignore
-        const opGraphics = this.add.graphics();
+        const opGraphics = this.add.graphics().fillStyle(operationActiveColor);
         const opActiveFlag = opGraphics.fillCircle(
           business.positionX - operationOffsetX - operationActiveOffsetX,
           business.positionY - logoSize / 2 + operationOffsetY * index,

@@ -14,6 +14,8 @@ export default class Preloader extends Phaser.Scene {
   preload(): void {
     logger.info('Preloader enter');
 
+    this.load.image('game-bg', '../../assets/images/game-bg.png');
+
     BUSINESS_INFO.forEach((businessInfo: BusinessInfo) => {
       this.load.image(businessInfo.logo, require(`../../assets/images/${businessInfo.logo}.png`));
     });
@@ -30,6 +32,7 @@ export default class Preloader extends Phaser.Scene {
   }
 
   retrieveStorageBackup(): GameState {
-    return StorageService.restoreGameState();
+    // return StorageService.restoreGameState();
+    return null;
   }
 }
