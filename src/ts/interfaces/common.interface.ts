@@ -3,6 +3,8 @@ export interface GraphicStats {
   profit: Phaser.GameObjects.Text;
   numberOfBranches: Phaser.GameObjects.Text;
   price: Phaser.GameObjects.Text;
+  upgradePrice: Phaser.GameObjects.Text;
+  managerPrice: Phaser.GameObjects.Text;
   progress: Phaser.GameObjects.Graphics;
 }
 

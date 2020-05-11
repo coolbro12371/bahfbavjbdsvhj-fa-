@@ -36,6 +36,7 @@ export class BaseBusiness implements BusinessOperations {
   protected _startTime: number;
   protected _endTime: number;
   protected _acquired: boolean;
+  protected _managerPrice: number;
 
   protected _graphicStats: GraphicStats;
   protected _logo: Phaser.GameObjects.Image;
@@ -43,7 +44,6 @@ export class BaseBusiness implements BusinessOperations {
 
   protected businessValueFactor: number;
   protected totalMoney: number;
-  protected managerPrice: number;
 
   protected totalMoneyEmitter: Phaser.Events.EventEmitter;
 
@@ -65,6 +65,10 @@ export class BaseBusiness implements BusinessOperations {
 
   get interval(): number {
     return this._interval;
+  }
+
+  get managerPrice(): number {
+    return this._managerPrice;
   }
 
   get price(): number {
@@ -161,7 +165,7 @@ export class BaseBusiness implements BusinessOperations {
     this._upgradePrice = upgradePrice;
     this._acquired = false;
     this.businessValueFactor = businessValueFactor;
-    this.managerPrice = managerPrice;
+    this._managerPrice = managerPrice;
     this.totalMoneyEmitter = totalMoneyEmitter;
 
     this.calculateUIPosition();
@@ -211,14 +215,14 @@ export class BaseBusiness implements BusinessOperations {
 
   hireManager(): void {
     if (
-      this.totalMoney < this.managerPrice ||
+      this.totalMoney < this._managerPrice ||
       this._managerHired
     ) { return; }
 
     this._managerHired = true;
     this._graphicOperations.hireManagerActive.alpha = 1;
 
-    this.emitTotalMoney(this.totalMoney - this.managerPrice);
+    this.emitTotalMoney(this.totalMoney - this._managerPrice);
   }
 
   produce(progressFraction: number): void {
@@ -280,6 +284,8 @@ export class BaseBusiness implements BusinessOperations {
     this._graphicStats.price.text = `Price: ${this._price}`;
     this._graphicStats.numberOfBranches.text = `No of branches: ${this._numberOfBranches}`;
     this._graphicStats.profit.text = `Profit: ${this._profit * this._numberOfBranches}`;
+    this._graphicStats.upgradePrice.text = `Upgrade price: ${this._upgradePrice}`;
+    this._graphicStats.managerPrice.text = `Manager price: ${this._managerPrice}`;
   }
 
   private emitTotalMoney(money: number): void {
@@ -289,6 +295,6 @@ export class BaseBusiness implements BusinessOperations {
   private updateGraphicOperations(): void {
     this._graphicOperations.acquire.alpha = this.totalMoney >= this._price ? 1 : operationDefaultAlpha;
     this._graphicOperations.upgrade.alpha = this.totalMoney >= this._upgradePrice ? 1 : operationDefaultAlpha;
-    this._graphicOperations.hireManager.alpha = this.totalMoney >= this.managerPrice ? 1 : operationDefaultAlpha;
+    this._graphicOperations.hireManager.alpha = this.totalMoney >= this._managerPrice ? 1 : operationDefaultAlpha;
   }
 }

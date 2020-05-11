@@ -22,7 +22,7 @@ export const SIDEMENU_GUI = {
 };
 
 export const BUSINESSES_GUI = {
-  businessesGap: 150,
+  businessesGap: 200,
   leftSideBusinessX: 350,
   rightSideBusinessX: 830,
   firstRowBusinessY: 80,
@@ -37,15 +37,15 @@ export const BUSINESSES_GUI = {
   logoSize: 64,
   logoDefaultAlpha: 0.4,
   nameOffsetY: 60,
-  moneyIndicatorX: 250,
-  moneyIndicatorY: 550,
+  moneyIndicatorX: 280,
+  moneyIndicatorY: 620,
   moneyIndicatorTitle: 'MONEY',
   moneyIndicatorFont: {
     font: 'bold 32px Georgia',
     fill: '#000'
   },
   statsOffsetX: 75,
-  statsOffsetY: 30,
+  statsOffsetY: 26,
   progressBarHeight: 20,
   progressBarWidth: 200,
   progressBarBorderColor: 0x000000,

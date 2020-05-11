@@ -297,6 +297,18 @@ export default class Game extends Phaser.Scene {
           `${ business.price.toString()}`,
           businessFont
         ),
+        upgradePrice: this.add.text(
+          business.positionX + statsOffsetX,
+          business.positionY + (3 * statsOffsetY),
+          `${ business.upgradePrice.toString()}`,
+          businessFont
+        ),
+        managerPrice: this.add.text(
+          business.positionX + statsOffsetX,
+          business.positionY + (4 * statsOffsetY),
+          `${ business.managerPrice.toString()}`,
+          businessFont
+        ),
         progress: this.add.graphics()
       };
 
