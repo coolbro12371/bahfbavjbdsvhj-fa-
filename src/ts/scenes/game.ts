@@ -67,11 +67,6 @@ export default class Game extends Phaser.Scene {
 
   private totalMoney = STARTING_MONEY;
   private businesses: BaseBusiness[] = [];
-  private menuOptions: string[] = [
-    'Managers',
-    'Upgrades',
-    'Stock market',
-  ];
 
   private totalMoneyListener: Phaser.Events.EventEmitter;
 
@@ -129,28 +124,22 @@ export default class Game extends Phaser.Scene {
     this.sceneGraphics.lineStyle(borderWidth, menuBgColor, menuBgAlpha);
     this.sceneGraphics.fillStyle(menuBgColor, menuBgAlpha);
     this.sceneGraphics.fillRect(menuX, menuY, menuWidth, menuHeight);
+    this.sceneGraphics.fillStyle(buttonColor, buttonAlpha);
+    this.sceneGraphics.fillRoundedRect(buttonOffsetX, buttonOffsetY, buttonWidth, buttonHeight);
 
-    this.menuOptions.forEach((option, i) => {
-      const position = {
-        x: buttonOffsetX,
-        y: buttonOffsetY + (i * buttonGap)
-      };
+    const text = this.add.text(
+      buttonOffsetX + (buttonWidth / 2),
+      buttonOffsetY + (buttonHeight / 2),
+      'HELP',
+      {
+        font: buttonFont,
+        fill: buttonFontFill
+      }
+    );
 
-      this.sceneGraphics.fillStyle(buttonColor, buttonAlpha);
-      this.sceneGraphics.fillRoundedRect(position.x, position.y, buttonWidth, buttonHeight);
-
-      const text = this.add.text(
-        position.x + (buttonWidth / 2),
-        position.y + (buttonHeight / 2),
-        option,
-        {
-          font: buttonFont,
-          fill: buttonFontFill
-        }
-      );
-
-      text.setOrigin(buttonOriginX, buttonOriginY);
-    });
+    text.setInteractive();
+    text.on('pointerup', () => this.scene.switch('help'));
+    text.setOrigin(buttonOriginX, buttonOriginY);
   }
 
   private createMoneyIndicator(): void {
@@ -171,6 +160,9 @@ export default class Game extends Phaser.Scene {
 
   private createDefaultBusinesses(): void {
     BUSINESS_INFO.forEach((business, index: number) => {
+      const logo = this.add.image( 0, 0, business.logo);
+      logo.setInteractive();
+
       this.businesses.push(new business.model(
         business.name,
         business.price,
@@ -178,7 +170,7 @@ export default class Game extends Phaser.Scene {
         business.interval,
         business.managerPrice,
         business.upgradePrice,
-        this.add.image( 0, 0, business.logo),
+        logo,
         index,
         this.totalMoneyListener
       ));
@@ -216,7 +208,6 @@ export default class Game extends Phaser.Scene {
       business.logo.setPosition(business.positionX, business.positionY);
 
       business.logo.alpha = logoDefaultAlpha;
-      business.logo.setInteractive();
       business.logo.on(
         'pointerup',
         async () => business.produce(1)

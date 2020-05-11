@@ -14,6 +14,7 @@ import PhaserStatsGame from './classes/PhaserStatsGame';
 
 import Preloader from './scenes/preloader';
 import Game from './scenes/game';
+import Help from './scenes/help';
 
 /**
  * Setup logger
@@ -49,6 +50,7 @@ if (gameConfig.STATS && process.env.NODE_ENV !== 'production') {
  * Registering game scenes
  */
 const initialScenes = {
+  help: Help,
   preloader: Preloader,
   game: Game
 };
