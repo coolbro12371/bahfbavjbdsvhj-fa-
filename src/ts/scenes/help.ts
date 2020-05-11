@@ -30,7 +30,12 @@ export default class Help extends Phaser.Scene {
     buyLegend.displayHeight = BUSINESSES_GUI.logoSize;
     buyLegend.scaleX = buyLegend.scaleY;
 
-    this.add.text(220, 150, 'Buy businesses or new branches of a business when available (icon not semi-transparent)...', { fill: '#494848' });
+    this.add.text(
+      220,
+      150,
+      'Buy businesses or new branches of a business when available (icon not semi-transparent)...',
+      { fill: '#494848' }
+      );
 
     const businessLegend = this.add.image(150, 250, 'convenience-store');
     businessLegend.displayHeight = BUSINESSES_GUI.logoSize;
