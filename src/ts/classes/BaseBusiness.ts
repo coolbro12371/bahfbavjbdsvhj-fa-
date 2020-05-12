@@ -43,6 +43,7 @@ export class BaseBusiness implements BusinessOperations {
   protected _logo: Phaser.GameObjects.Image;
   protected _graphicOperations: GraphicOperations;
 
+  protected numberOfUpgrades: number;
   protected businessValueFactor: number;
   protected totalMoney: number;
 
@@ -170,6 +171,7 @@ export class BaseBusiness implements BusinessOperations {
     this.businessValueFactor = businessValueFactor;
     this._managerPrice = managerPrice;
     this.totalMoneyEmitter = totalMoneyEmitter;
+    this.numberOfUpgrades = 0;
 
     this.calculateUIPosition();
     this.setLogoUIEffects();
@@ -206,7 +208,12 @@ export class BaseBusiness implements BusinessOperations {
   }
 
   upgrade(): void {
-    if (this.totalMoney < this._upgradePrice) { return; }
+    if (
+      (this.totalMoney < this._upgradePrice) ||
+      !this._acquired
+    ) { return; }
+
+    this.numberOfUpgrades += 1;
 
     const remainingMoney = this.totalMoney - this._upgradePrice;
 

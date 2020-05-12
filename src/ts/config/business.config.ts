@@ -7,7 +7,7 @@ import { ConstructionBusiness } from '../classes/ConstructionBusiness';
 import { WayneIndustriesBusiness } from '../classes/WayneIndustriesBusiness';
 
 export interface BusinessInfo {
-  model: typeof BaseBusiness;
+  model: any;
   name: string;
   price: number;
   profit: number;
@@ -15,6 +15,8 @@ export interface BusinessInfo {
   managerPrice: number;
   upgradePrice: number;
   logo: string;
+  enableSpecialOperation?: boolean;
+  specialOperationLogo?: string;
 }
 
 export interface BusinessOperation {
@@ -22,7 +24,8 @@ export interface BusinessOperation {
   logo: string;
 }
 
-export const STARTING_MONEY = 400 ;
+// export const STARTING_MONEY = 400 ;
+export const STARTING_MONEY = 4200000000 ;
 export const UPGRADE_PROFIT_MULTIPLIER = 1.25;
 export const UPGRADE_PRICE_MULTIPLIER = 1.15;
 export const ACQUIRING_MULTIPLIER = 1.15;
@@ -76,7 +79,9 @@ export const BUSINESS_INFO: BusinessInfo[] = [
     interval: 120000,
     managerPrice: 2000000,
     upgradePrice: 2000000,
-    logo: 'tech'
+    logo: 'tech',
+    enableSpecialOperation: true,
+    specialOperationLogo: 'stock-market'
   },
   {
     model: WayneIndustriesBusiness,
@@ -86,7 +91,9 @@ export const BUSINESS_INFO: BusinessInfo[] = [
     interval: 12000,
     managerPrice: 100000000,
     upgradePrice: 100000000,
-    logo: 'wayne-enterprises'
+    logo: 'wayne-enterprises',
+    enableSpecialOperation: true,
+    specialOperationLogo: 'batsign'
   },
 ];
 

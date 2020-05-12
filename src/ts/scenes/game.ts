@@ -159,21 +159,28 @@ export default class Game extends Phaser.Scene {
   }
 
   private createDefaultBusinesses(): void {
-    BUSINESS_INFO.forEach((business, index: number) => {
-      const logo = this.add.image( 0, 0, business.logo);
+    BUSINESS_INFO.forEach((businessInfoItem, index: number) => {
+      const logo = this.add.image( 0, 0, businessInfoItem.logo);
       logo.setInteractive();
 
-      this.businesses.push(new business.model(
-        business.name,
-        business.price,
-        business.profit,
-        business.interval,
-        business.managerPrice,
-        business.upgradePrice,
+      const defaultBusiness = new businessInfoItem.model(
+        businessInfoItem.name,
+        businessInfoItem.price,
+        businessInfoItem.profit,
+        businessInfoItem.interval,
+        businessInfoItem.managerPrice,
+        businessInfoItem.upgradePrice,
         logo,
         index,
         this.totalMoneyListener
-      ));
+      );
+
+      if (businessInfoItem.enableSpecialOperation) {
+        (defaultBusiness as typeof businessInfoItem.model).scene = this;
+        (defaultBusiness as typeof businessInfoItem.model).specialLogo = businessInfoItem.specialOperationLogo;
+      }
+
+      this.businesses.push(defaultBusiness);
     });
   }
 

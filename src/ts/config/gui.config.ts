@@ -34,6 +34,10 @@ export const BUSINESSES_GUI = {
     font: '14px Georgia',
     fill: '#494848'
   },
+  businessFontBold: {
+    font: '14px Georgia',
+    fill: '#494848'
+  },
   logoSize: 64,
   logoDefaultAlpha: 0.4,
   nameOffsetY: 60,

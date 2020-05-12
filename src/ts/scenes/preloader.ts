@@ -14,8 +14,14 @@ export default class Preloader extends Phaser.Scene {
   preload(): void {
     logger.info('Preloader enter');
 
+    /**
+     * Game assets
+     */
     this.load.image('game-bg', '../../assets/images/game-bg.png');
 
+    /**
+     * Business general asssets
+     */
     BUSINESS_INFO.forEach((businessInfo: BusinessInfo) => {
       this.load.image(businessInfo.logo, require(`../../assets/images/${businessInfo.logo}.png`));
     });
@@ -23,6 +29,13 @@ export default class Preloader extends Phaser.Scene {
     BUSINESS_OPERATIONS.forEach((businessOption: BusinessOperation) => {
       this.load.image(businessOption.logo, require(`../../assets/images/${businessOption.logo}.png`));
     });
+
+    /**
+     * Business specific assets (for subclass operations)
+     * Here since assets are load imperatively from a Scene
+     */
+    this.load.image('stock-market', '../../assets/images/stock-market.png');
+    this.load.image('batsign', '../../assets/images/batsign.png');
   }
 
   create(): void {
