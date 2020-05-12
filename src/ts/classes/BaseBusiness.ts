@@ -237,9 +237,7 @@ export class BaseBusiness implements BusinessOperations {
   }
 
   produce(progressFraction: number): void {
-    if (!this._acquired) { return; }
-
-    if (this._running) { return; }
+    if (!this._acquired || this._running) { return; }
 
     this._running = true;
     this._startTime = new Date().getTime();
