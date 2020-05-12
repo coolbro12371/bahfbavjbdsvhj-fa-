@@ -121,12 +121,16 @@ export default class Game extends Phaser.Scene {
   }
 
   private setSideMenu(): void {
-    this.sceneGraphics.lineStyle(borderWidth, menuBgColor, menuBgAlpha);
     this.sceneGraphics.fillStyle(menuBgColor, menuBgAlpha);
     this.sceneGraphics.fillRect(menuX, menuY, menuWidth, menuHeight);
-    this.sceneGraphics.fillStyle(buttonColor, buttonAlpha);
-    this.sceneGraphics.fillRoundedRect(buttonOffsetX, buttonOffsetY, buttonWidth, buttonHeight);
 
+    const button = this.add.rectangle(
+      buttonOffsetX + buttonWidth / 2,
+      buttonOffsetY + buttonHeight /
+      2, buttonWidth, buttonHeight,
+      buttonColor,
+      buttonAlpha
+    );
     const text = this.add.text(
       buttonOffsetX + (buttonWidth / 2),
       buttonOffsetY + (buttonHeight / 2),
@@ -137,9 +141,15 @@ export default class Game extends Phaser.Scene {
       }
     );
 
-    text.setInteractive();
-    text.on('pointerup', () => this.scene.switch('help'));
     text.setOrigin(buttonOriginX, buttonOriginY);
+    button.setOrigin(buttonOriginX, buttonOriginY);
+
+    text.setInteractive();
+    button.setInteractive();
+
+    text.on('pointerup', () => this.scene.switch('help'));
+    button.on('pointerup', () => this.scene.switch('help'));
+
   }
 
   private createMoneyIndicator(): void {

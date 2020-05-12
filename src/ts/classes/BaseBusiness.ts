@@ -294,17 +294,21 @@ export class BaseBusiness implements BusinessOperations {
   private updateGraphicStats(): void {
     this._logo.alpha = this.totalMoney >= this._price ? 1 : logoDefaultAlpha;
 
-    this._graphicStats.price.text = `Price: ${this._price}`;
+    this._graphicStats.price.text = `Price: ${this._price.toFixed(2)}`;
     this._graphicStats.numberOfBranches.text = `No of branches: ${this._numberOfBranches}`;
-    this._graphicStats.profit.text = `Profit: ${this._profit * this._numberOfBranches}`;
-    this._graphicStats.upgradePrice.text = `Upgrade price: ${this._upgradePrice}`;
-    this._graphicStats.managerPrice.text = `Manager price: ${this._managerPrice}`;
+    this._graphicStats.profit.text = `Profit: ${(this._profit * this._numberOfBranches).toFixed(2)}`;
+    this._graphicStats.upgradePrice.text = `Upgrade price: ${this._upgradePrice.toFixed(2)}`;
+    this._graphicStats.managerPrice.text = `Manager price: ${this._managerPrice.toFixed(2)}`;
   }
 
   private updateGraphicOperations(): void {
     this._graphicOperations.acquire.alpha = this.totalMoney >= this._price ? 1 : operationDefaultAlpha;
     this._graphicOperations.upgrade.alpha = this.totalMoney >= this._upgradePrice ? 1 : operationDefaultAlpha;
     this._graphicOperations.hireManager.alpha = this.totalMoney >= this._managerPrice ? 1 : operationDefaultAlpha;
+
+    this._graphicOperations.acquireActive.alpha = this._acquired ? 1 : 0;
+    this._graphicOperations.upgradeActive.alpha = (this.numberOfUpgrades > 0) ? 1 : 0;
+    this._graphicOperations.hireManagerActive.alpha = this._managerHired ? 1 : 0;
   }
 
   private setBusinessIconOnHover(image: Phaser.GameObjects.Image): void {
