@@ -84,6 +84,7 @@ export default class Game extends Phaser.Scene {
     this.initTotalMoneyListener();
     this.createDefaultBusinesses();
     this.restoreBusinesses(businesses);
+    this.restoreTotalMoneyFromBackup();
     this.createBusinessLogos();
     this.createBusinessOperations();
     this.createBusinessStats();
@@ -205,8 +206,7 @@ export default class Game extends Phaser.Scene {
         managerHired,
         upgradePrice,
         acquired,
-        startTime,
-        endTime
+        lastStartime
       } = backedUpBusinesses[index];
 
       defaultBusiness.price = price;
@@ -215,8 +215,19 @@ export default class Game extends Phaser.Scene {
       defaultBusiness.numberOfBranches = numberOfBranches;
       defaultBusiness.managerHired = managerHired;
       defaultBusiness.acquired = acquired;
-      defaultBusiness.startTime = startTime;
-      defaultBusiness.endTime = endTime;
+      defaultBusiness.lastStartTime = lastStartime || defaultBusiness.lastStartTime;
+    });
+  }
+
+  private restoreTotalMoneyFromBackup(): void {
+    this.businesses.forEach((business: BaseBusiness) => {
+      const timeDifference = new Date().getTime() - business.lastStartTime;
+      const numberOfIntervals = Math.floor(timeDifference / business.interval);
+      const businessBenefit = numberOfIntervals * business.profit * business.numberOfBranches;
+
+      if (business.managerHired) {
+        this.totalMoney += businessBenefit;
+      }
     });
   }
 

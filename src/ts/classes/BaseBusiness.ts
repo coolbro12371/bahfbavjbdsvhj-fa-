@@ -35,6 +35,7 @@ export class BaseBusiness implements BusinessOperations {
   protected _running: boolean;
   protected _upgradePrice: number;
   protected _startTime: number;
+  protected _lastStartTime: number;
   protected _endTime: number;
   protected _acquired: boolean;
   protected _managerPrice: number;
@@ -121,20 +122,12 @@ export class BaseBusiness implements BusinessOperations {
     this._acquired = acquired;
   }
 
-  get startTime(): number {
-    return this._startTime;
+  get lastStartTime(): number {
+    return this._lastStartTime;
   }
 
-  set startTime(startTime: number) {
-    this._startTime = startTime;
-  }
-
-  get endTime(): number {
-    return this._endTime;
-  }
-
-  set endTime(endTime: number) {
-    this._endTime = endTime;
+  set lastStartTime(lastStartTime: number) {
+    this._lastStartTime = lastStartTime;
   }
 
   set graphicStats(stats: GraphicStats) {
@@ -168,8 +161,9 @@ export class BaseBusiness implements BusinessOperations {
     this._running = false;
     this._upgradePrice = upgradePrice;
     this._acquired = false;
-    this.businessValueFactor = businessValueFactor;
     this._managerPrice = managerPrice;
+    this._lastStartTime = 0;
+    this.businessValueFactor = businessValueFactor;
     this.totalMoneyEmitter = totalMoneyEmitter;
     this.numberOfUpgrades = 0;
 
@@ -241,6 +235,7 @@ export class BaseBusiness implements BusinessOperations {
 
     this._running = true;
     this._startTime = new Date().getTime();
+    this._lastStartTime = new Date().getTime();
     this._endTime = this._startTime + this._interval;
 
     setTimeout(() => {

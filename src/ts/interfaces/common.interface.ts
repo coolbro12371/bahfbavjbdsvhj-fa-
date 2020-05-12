@@ -25,8 +25,7 @@ export interface BusinessState {
   managerHired: boolean;
   upgradePrice: number;
   acquired: boolean;
-  startTime: number;
-  endTime: number;
+  lastStartime: number;
 }
 
 export interface GameState {
