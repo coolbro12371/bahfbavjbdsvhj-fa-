@@ -17,7 +17,7 @@ export default class Preloader extends Phaser.Scene {
     /**
      * Game assets
      */
-    this.load.image('game-bg', '../../assets/images/game-bg.png');
+    this.load.image('game-bg', require('../../assets/images/game-bg.png'));
 
     /**
      * Business general asssets
@@ -34,8 +34,8 @@ export default class Preloader extends Phaser.Scene {
      * Business specific assets (for subclass operations)
      * Here since assets are load imperatively from a Scene
      */
-    this.load.image('stock-market', '../../assets/images/stock-market.png');
-    this.load.image('batsign', '../../assets/images/batsign.png');
+    this.load.image('stock-market', require('../../assets/images/stock-market.png'));
+    this.load.image('batsign', require('../../assets/images/batsign.png'));
   }
 
   create(): void {
