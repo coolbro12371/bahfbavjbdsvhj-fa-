@@ -26,37 +26,39 @@ export default class Help extends Phaser.Scene {
       .setInteractive()
       .on('pointerup', () => this.scene.switch('game'));
 
-    const buyLegend = this.add.image(150, 150, 'buy');
+    const buyLegend = this.add.image(150, 100, 'buy');
     buyLegend.displayHeight = BUSINESSES_GUI.logoSize;
     buyLegend.scaleX = buyLegend.scaleY;
 
     this.add.text(
       220,
-      150,
+      100,
       'Buy businesses or new branches of a business when available (icon not semi-transparent)...',
       { fill: '#494848' }
       );
 
-    const businessLegend = this.add.image(150, 250, 'convenience-store');
+    const businessLegend = this.add.image(150, 200, 'convenience-store');
     businessLegend.displayHeight = BUSINESSES_GUI.logoSize;
     businessLegend.scaleX = businessLegend.scaleY;
 
-    this.add.text(220, 250, 'Produce your business value and check on the progress...', { fill: '#494848' });
+    this.add.text(220, 200, 'Produce your business value and check on the progress...', { fill: '#494848' });
 
-    const upgradeLegend = this.add.image(150, 350, 'upgrade');
+    const upgradeLegend = this.add.image(150, 300, 'upgrade');
     upgradeLegend.displayHeight = BUSINESSES_GUI.logoSize;
     upgradeLegend.scaleX = upgradeLegend.scaleY;
 
-    this.add.text(220, 350, 'Upgrade your business to increase the profits per branch...', { fill: '#494848' });
+    this.add.text(220, 300, 'Upgrade your business to increase the profits per branch...', { fill: '#494848' });
 
-    const managerLegend = this.add.image(150, 450, 'manager');
+    const managerLegend = this.add.image(150, 400, 'manager');
     managerLegend.displayHeight = BUSINESSES_GUI.logoSize;
     managerLegend.scaleX = managerLegend.scaleY;
 
-    this.add.text(220, 450, 'Hire a manager to automatically produce benefits...', { fill: '#494848' });
+    this.add.text(220, 400, 'Hire a manager to automatically produce benefits...', { fill: '#494848' });
 
-    this.add.text(220, 550, 'Close the game at anytime without losing your progress...', { fill: '#494848' });
+    this.add.text(220, 500, 'Keep an eye out for susprises when upgrading your business ;)', { fill: '#494848' });
 
-    this.add.text(SIZE.x / 2, 650, 'And get rich!!!', { fill: '#494848' });
+    this.add.text(220, 600, 'Close the game at anytime without losing your progress...', { fill: '#494848' });
+
+    this.add.text(SIZE.x / 2, 660, 'And get rich!!!', { fill: '#494848' });
   }
 }
