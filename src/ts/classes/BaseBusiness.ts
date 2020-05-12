@@ -19,7 +19,8 @@ const {
   progressBarWidth,
   businessesGap,
   logoDefaultAlpha,
-  operationDefaultAlpha
+  operationDefaultAlpha,
+  iconHoverAngle
 } = BUSINESSES_GUI;
 
 export class BaseBusiness implements BusinessOperations {
@@ -141,6 +142,8 @@ export class BaseBusiness implements BusinessOperations {
 
   set graphicOperations(graphicOperations: GraphicOperations) {
     this._graphicOperations = graphicOperations;
+
+    this.setGraphicOpsUIEffects();
   }
 
   constructor(
@@ -169,6 +172,7 @@ export class BaseBusiness implements BusinessOperations {
     this.totalMoneyEmitter = totalMoneyEmitter;
 
     this.calculateUIPosition();
+    this.setLogoUIEffects();
   }
 
   update(totalMoney: number): void {
@@ -278,6 +282,10 @@ export class BaseBusiness implements BusinessOperations {
     );
   }
 
+  private emitTotalMoney(money: number): void {
+    this.totalMoneyEmitter.emit('totalMoneyUpdated', money);
+  }
+
   private updateGraphicStats(): void {
     this._logo.alpha = this.totalMoney >= this._price ? 1 : logoDefaultAlpha;
 
@@ -288,13 +296,25 @@ export class BaseBusiness implements BusinessOperations {
     this._graphicStats.managerPrice.text = `Manager price: ${this._managerPrice}`;
   }
 
-  private emitTotalMoney(money: number): void {
-    this.totalMoneyEmitter.emit('totalMoneyUpdated', money);
-  }
-
   private updateGraphicOperations(): void {
     this._graphicOperations.acquire.alpha = this.totalMoney >= this._price ? 1 : operationDefaultAlpha;
     this._graphicOperations.upgrade.alpha = this.totalMoney >= this._upgradePrice ? 1 : operationDefaultAlpha;
     this._graphicOperations.hireManager.alpha = this.totalMoney >= this._managerPrice ? 1 : operationDefaultAlpha;
+  }
+
+  private setBusinessIconOnHover(image: Phaser.GameObjects.Image): void {
+    image
+    .on('pointerover', () => image.angle += iconHoverAngle )
+    .on('pointerout', () => image.angle -= iconHoverAngle );
+  }
+
+  private setLogoUIEffects(): void {
+    this.setBusinessIconOnHover(this._logo);
+  }
+
+  private setGraphicOpsUIEffects(): void {
+    this.setBusinessIconOnHover(this._graphicOperations.acquire);
+    this.setBusinessIconOnHover(this._graphicOperations.upgrade);
+    this.setBusinessIconOnHover(this._graphicOperations.hireManager);
   }
 }

@@ -57,5 +57,6 @@ export const BUSINESSES_GUI = {
   operationActiveOffsetX: 35,
   operationActiveColor: 0x2ad82a,
   operationActiveRadius: 4,
-  operationDefaultAlpha: 0.4
+  operationDefaultAlpha: 0.4,
+  iconHoverAngle: 25
 };
