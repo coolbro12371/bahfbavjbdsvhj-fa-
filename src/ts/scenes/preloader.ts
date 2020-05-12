@@ -45,7 +45,6 @@ export default class Preloader extends Phaser.Scene {
   }
 
   retrieveStorageBackup(): GameState {
-    // return StorageService.restoreGameState();
-    return null;
+    return StorageService.restoreGameState();
   }
 }
