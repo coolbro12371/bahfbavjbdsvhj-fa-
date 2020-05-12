@@ -1,4 +1,7 @@
 import * as logger from 'js-logger';
+import { BUSINESS_INFO, BUSINESS_OPERATIONS, BusinessInfo, BusinessOperation } from '../config/business.config';
+import { GameState } from '../interfaces/common.interface';
+import { StorageService } from '../services/storage.service';
 
 /**
  * Preloader Phaser scene.
@@ -11,16 +14,38 @@ export default class Preloader extends Phaser.Scene {
   preload(): void {
     logger.info('Preloader enter');
 
-    // TODO preload assets
+    /**
+     * Game assets
+     */
+    this.load.image('game-bg', '../../assets/images/game-bg.png');
 
-    this.load.image('bg', require('../../assets/images/bg.jpg'));
-    this.load.image('logo', require('../../assets/images/logo.png'));
+    /**
+     * Business general asssets
+     */
+    BUSINESS_INFO.forEach((businessInfo: BusinessInfo) => {
+      this.load.image(businessInfo.logo, require(`../../assets/images/${businessInfo.logo}.png`));
+    });
+
+    BUSINESS_OPERATIONS.forEach((businessOption: BusinessOperation) => {
+      this.load.image(businessOption.logo, require(`../../assets/images/${businessOption.logo}.png`));
+    });
+
+    /**
+     * Business specific assets (for subclass operations)
+     * Here since assets are load imperatively from a Scene
+     */
+    this.load.image('stock-market', '../../assets/images/stock-market.png');
+    this.load.image('batsign', '../../assets/images/batsign.png');
   }
 
   create(): void {
     logger.info('Preloader leave');
 
-    this.scene.start('game');
+    this.scene.start('game', { gameState: this.retrieveStorageBackup()});
   }
 
+  retrieveStorageBackup(): GameState {
+    // return StorageService.restoreGameState();
+    return null;
+  }
 }

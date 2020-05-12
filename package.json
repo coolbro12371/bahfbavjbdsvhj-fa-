@@ -5,10 +5,13 @@
   "main": "src/ts/game.ts",
   "scripts": {
     "start": "webpack-dev-server --open --port 3017",
+    "start:server": "node server.js",
     "build:dev": "webpack",
     "build:prod": "webpack --config webpack.config.prod.ts",
     "lint": "tslint src/**/*/*.ts",
-    "tslint:fix": "tslint --fix src/**/*/*.ts"
+    "tslint:fix": "tslint --fix src/**/*/*.ts",
+    "heroku-postbuild": "npm run build:prod",
+    "heroku:deploy": "heroku login && git push heroku master"
   },
   "husky": {
     "hooks": {
@@ -22,8 +25,11 @@
   "author": "Mario Barrajón SIlva",
   "homepage": "https://github.com/mbarsil/adventure-capitalist#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
     "js-logger": "^1.6.0",
-    "lodash-es": "^4.17.15",
+    "morgan": "^1.10.0",
     "phaser": "^3.19.0",
     "stats.js": "^0.17.0"
   },

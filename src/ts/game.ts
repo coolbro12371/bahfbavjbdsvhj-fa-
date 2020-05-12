@@ -6,22 +6,21 @@ import '../css/style.css'; // loading css
 
 import 'phaser'; // loading Phaser with dependencies
 
-import _forEach from 'lodash-es/forEach';
 import * as logger from 'js-logger';
 
-import * as gameConfig from './game.config';
+import * as gameConfig from './config/game.config';
 
 import PhaserStatsGame from './classes/PhaserStatsGame';
 
-import Boot from './scenes/boot';
 import Preloader from './scenes/preloader';
 import Game from './scenes/game';
+import Help from './scenes/help';
 
 /**
  * Setup logger
  */
 logger.useDefaults();
-logger.setLevel(gameConfig.logLevel);
+logger.setLevel(gameConfig.LOG_LEVEL);
 
 /**
  * Phaser game config
@@ -30,8 +29,8 @@ logger.setLevel(gameConfig.logLevel);
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   parent: 'container',     // parent id - '' means  no container
-  width: gameConfig.size.x,
-  height: gameConfig.size.y
+  width: gameConfig.SIZE.x,
+  height: gameConfig.SIZE.y
 };
 
 /**
@@ -40,7 +39,8 @@ const config: Phaser.Types.Core.GameConfig = {
  * @type {Phaser.Game}
  */
 let game: Phaser.Game;
-if (gameConfig.stats && process.env.NODE_ENV !== 'production') {
+
+if (gameConfig.STATS && process.env.NODE_ENV !== 'production') {
   game = new PhaserStatsGame(config);
 } else {
   game = new Phaser.Game(config);
@@ -49,12 +49,14 @@ if (gameConfig.stats && process.env.NODE_ENV !== 'production') {
 /**
  * Registering game scenes
  */
-_forEach({
-  boot: Boot,
+const initialScenes = {
+  help: Help,
   preloader: Preloader,
   game: Game
-}, function(scene, key) {
-  game.scene.add(key, scene);
+};
+
+Object.entries(initialScenes).forEach((entry: any[]) => {
+  game.scene.add(entry[0], entry[1]);
 });
 
-game.scene.start('boot');
+game.scene.start('preloader');
