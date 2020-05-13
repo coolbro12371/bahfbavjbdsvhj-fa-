@@ -1,4 +1,3 @@
-import { BaseBusiness } from '../classes/BaseBusiness';
 import { ConvenienceStoreBusiness } from '../classes/ConvenienceStoreBusiness';
 import { TechBusiness } from '../classes/TechBusiness';
 import { PawnShopBusiness } from '../classes/PawnShopBusiness';
@@ -24,8 +23,9 @@ export interface BusinessOperation {
   logo: string;
 }
 
-// export const STARTING_MONEY = 400 ;
-export const STARTING_MONEY = 4200000000 ;
+export const STARTING_MONEY = 400 ;
+// For testig purposes
+// export const STARTING_MONEY = 4200000000 ;
 export const UPGRADE_PROFIT_MULTIPLIER = 1.25;
 export const UPGRADE_PRICE_MULTIPLIER = 1.15;
 export const ACQUIRING_MULTIPLIER = 1.15;

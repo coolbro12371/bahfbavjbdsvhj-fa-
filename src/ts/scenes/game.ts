@@ -84,6 +84,7 @@ export default class Game extends Phaser.Scene {
     this.initTotalMoneyListener();
     this.createDefaultBusinesses();
     this.restoreBusinesses(businesses);
+    this.restoreTotalMoneyFromBackup();
     this.createBusinessLogos();
     this.createBusinessOperations();
     this.createBusinessStats();
@@ -121,12 +122,16 @@ export default class Game extends Phaser.Scene {
   }
 
   private setSideMenu(): void {
-    this.sceneGraphics.lineStyle(borderWidth, menuBgColor, menuBgAlpha);
     this.sceneGraphics.fillStyle(menuBgColor, menuBgAlpha);
     this.sceneGraphics.fillRect(menuX, menuY, menuWidth, menuHeight);
-    this.sceneGraphics.fillStyle(buttonColor, buttonAlpha);
-    this.sceneGraphics.fillRoundedRect(buttonOffsetX, buttonOffsetY, buttonWidth, buttonHeight);
 
+    const button = this.add.rectangle(
+      buttonOffsetX + buttonWidth / 2,
+      buttonOffsetY + buttonHeight /
+      2, buttonWidth, buttonHeight,
+      buttonColor,
+      buttonAlpha
+    );
     const text = this.add.text(
       buttonOffsetX + (buttonWidth / 2),
       buttonOffsetY + (buttonHeight / 2),
@@ -137,9 +142,15 @@ export default class Game extends Phaser.Scene {
       }
     );
 
-    text.setInteractive();
-    text.on('pointerup', () => this.scene.switch('help'));
     text.setOrigin(buttonOriginX, buttonOriginY);
+    button.setOrigin(buttonOriginX, buttonOriginY);
+
+    text.setInteractive();
+    button.setInteractive();
+
+    text.on('pointerup', () => this.scene.switch('help'));
+    button.on('pointerup', () => this.scene.switch('help'));
+
   }
 
   private createMoneyIndicator(): void {
@@ -195,8 +206,7 @@ export default class Game extends Phaser.Scene {
         managerHired,
         upgradePrice,
         acquired,
-        startTime,
-        endTime
+        lastStartime
       } = backedUpBusinesses[index];
 
       defaultBusiness.price = price;
@@ -205,8 +215,19 @@ export default class Game extends Phaser.Scene {
       defaultBusiness.numberOfBranches = numberOfBranches;
       defaultBusiness.managerHired = managerHired;
       defaultBusiness.acquired = acquired;
-      defaultBusiness.startTime = startTime;
-      defaultBusiness.endTime = endTime;
+      defaultBusiness.lastStartTime = lastStartime || defaultBusiness.lastStartTime;
+    });
+  }
+
+  private restoreTotalMoneyFromBackup(): void {
+    this.businesses.forEach((business: BaseBusiness) => {
+      const timeDifference = new Date().getTime() - business.lastStartTime;
+      const numberOfIntervals = Math.floor(timeDifference / business.interval);
+      const businessBenefit = numberOfIntervals * business.profit * business.numberOfBranches;
+
+      if (business.managerHired) {
+        this.totalMoney += businessBenefit;
+      }
     });
   }
 

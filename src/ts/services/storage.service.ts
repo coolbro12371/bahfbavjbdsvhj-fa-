@@ -16,12 +16,12 @@ export class StorageService {
           managerHired: business.managerHired,
           upgradePrice: business.upgradePrice,
           acquired: business.acquired,
-          startTime: business.startTime,
-          endTime: business.endTime
+          lastStartime: business.lastStartTime
         };
       })
     };
 
+    localStorage.removeItem(GAME_BACKUP_KEY);
     localStorage.setItem(GAME_BACKUP_KEY, JSON.stringify(backupObject));
   }
 
