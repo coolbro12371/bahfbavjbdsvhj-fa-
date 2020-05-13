@@ -1,4 +1,3 @@
-import { BaseBusiness } from '../classes/BaseBusiness';
 import { ConvenienceStoreBusiness } from '../classes/ConvenienceStoreBusiness';
 import { TechBusiness } from '../classes/TechBusiness';
 import { PawnShopBusiness } from '../classes/PawnShopBusiness';
