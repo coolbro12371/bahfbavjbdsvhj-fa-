@@ -1,4 +1,4 @@
-# Game Closure test game
+# Adventure Capitalist
 
 ## Overview and acknowledgments
 This is a test project to showcase the creation process and organization of a HTML5 game.
